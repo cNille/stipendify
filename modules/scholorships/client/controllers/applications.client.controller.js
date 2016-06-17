@@ -64,13 +64,12 @@
 
     function fillSemesterArray(semesters){
       var thisSemester = SemesterService.getThisSemesterName();
-      SemesterService.getLastFourSemesters(semesters);
-      
-      while (semesters[0].name !== thisSemester){
+      while (semesters.length > 0 && semesters[0].name !== thisSemester){
         SemesterService.addSemester(semesters, true);
       }
+      SemesterService.getLastFourSemesters(semesters);
     }
-    //fillSemesterArray($scope.user.universitypoints.semesters);
+    fillSemesterArray($scope.user.universitypoints.semesters);
 
     // Check that there is user- and scholorship ids.
     var shouldSeeList = vm.scholorshipId === undefined && vm.authentication.user._id === undefined ;

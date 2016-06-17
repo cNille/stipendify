@@ -14,21 +14,13 @@
         if(arrLength === 0){
           newSemester = this.getThisSemesterName();
         } else {
-          var lastSemester = semesters[arrLength-1].name;
+          var lastSemester =  addToFront ? semesters[0].name : semesters[arrLength-1].name;
           var year = parseInt(lastSemester.substring(2));  
           var name = lastSemester.substring(0,2);  
-          if(addToFront){
-            newSemester = name === 'VT' ? 'HT' + year.toString() : 'VT' + (year + 1).toString();
-          } else {
-            newSemester = name === 'VT' ? 'HT' + (year - 1).toString() : 'VT' + year.toString();
-          }
+          newSemester = name === 'VT' ? 'HT' + (year - !addToFront).toString() : 'VT' + (year + addToFront).toString();
         } 
         var obj = { 'name': newSemester, 'points': 0 };
-        if(addToFront){
-          semesters.unshift(obj);
-        } else {
-          semesters.push(obj);
-        }
+        addToFront ? semesters.unshift(obj) : semesters.push(obj);
       },
       getThisSemesterName: function (){ 
         var today = new Date();
