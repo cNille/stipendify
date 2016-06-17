@@ -39,6 +39,10 @@
         },
         resolve: {
           applicationResolve: newApplication,
+          semestersjs:  function($http){
+            // $http returns a promise for the url data
+            return $http({ method: 'GET', url: '/js/semesters.js' });
+          },
         },
         data: {
           roles: ['user', 'admin'],

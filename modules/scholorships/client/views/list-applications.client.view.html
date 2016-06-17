@@ -15,6 +15,27 @@
       </small>
       <h4 class="list-group-item-heading" data-ng-bind="application.name"></h4>
     </a>
+    <table class="applications">
+    <tr>
+      <th>
+        <button ng-click="sortBy('displayName')">Namn</button>
+        <span class="sortorder" ng-show="propertyName === 'displayName'" ng-class="{reverse: reverse}"></span>
+      </th>
+      <th>
+        <button ng-click="sortBy('phone')">Phone Number</button>
+        <span class="sortorder" ng-show="propertyName === 'phone'" ng-class="{reverse: reverse}"></span>
+      </th>
+      <th>
+        <button ng-click="sortBy('age')">Age</button>
+        <span class="sortorder" ng-show="propertyName === 'age'" ng-class="{reverse: reverse}"></span>
+      </th>
+    </tr>
+    <tr ng-repeat="friend in friends">
+      <td>{{friend.name}}</td>
+      <td>{{friend.phone}}</td>
+      <td>{{friend.age}}</td>
+    </tr>
+  </table>
   </div>
   <div class="alert alert-warning text-center" data-ng-if="vm.applications.$resolved && !vm.applications.length">
     No Applications yet, why don't you <a data-ui-sref="applications.create">create one</a>?
