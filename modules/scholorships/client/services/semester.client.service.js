@@ -37,6 +37,12 @@
         var thisSemester = (month < 7 ? 'VT' : 'HT') + (year - 2000).toString();
         return thisSemester;
       },
+      getLastFourSemesters: function(semesters){
+        while(semesters.length < 4){
+          this.addSemester(semesters, false);
+        }
+        return semesters;
+      },
     };
   } 
 })();
