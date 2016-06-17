@@ -1,0 +1,37 @@
+<section>
+  <div class="page-header">
+    <h1 data-ng-bind="vm.scholorship.name"></h1>
+  </div>
+  <div class=".col-md-6 .col-md-offset-2">
+    <label>Startdatum:</label><div ng-bind="startString"></div>
+    <label>Slutdatum:</label><div ng-bind="endString"></div>
+    <div ng-bind-html="htmlDescription"></div>
+    
+    <a class="btn btn-primary"
+       data-ui-sref="applications.create({ scholorshipId: vm.scholorship._id, scholorshipName: vm.scholorship.name})">
+      <i class="glyphicon glyphicon-plus-sign"></i>
+      Ansök nu
+    </a>
+  </div>
+  <div class="pull-right"
+       data-ng-show="vm.scholorship.isCurrentUserOwner">
+    <a class="btn btn-primary"
+       data-ui-sref="scholorships.edit({ scholorshipId: vm.scholorship._id })">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn btn-primary" data-ng-click="vm.remove()">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  <small>
+    <em class="text-muted">
+      Posted on
+      <span data-ng-bind="vm.scholorship.created | date:'mediumDate'"></span>
+      by
+      <span data-ng-if="vm.scholorship.user"
+            data-ng-bind="vm.scholorship.user.displayName"></span>
+      <span data-ng-if="!vm.scholorship.user">Deleted User</span>
+    </em>
+  </small>
+  <p class="lead" data-ng-bind="vm.scholorship.content"></p>
+</section>

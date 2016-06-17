@@ -1,0 +1,31 @@
+<section>
+  <div class="page-header">
+    <h1 data-ng-bind="vm.application.name"></h1>
+  </div>
+  <div class=".col-md-6 .col-md-offset-2">
+    <label>Antal terminer studerat:</label><div ng-bind="vm.application.semesterStudied"></div>
+    <label>Antal terminer som nationsmedlem:</label><div ng-bind="vm.application.semesterNation"></div>
+    <div ng-bind-html="htmlDescription"></div>
+
+    <!-- TODO: Show all data -->
+    
+    
+  </div>
+  <div class="pull-right"
+       data-ng-show="vm.appliciation.isCurrentUserOwner">
+    <a class="btn btn-primary" data-ng-click="vm.remove()">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  <small>
+    <em class="text-muted">
+      Posted on
+      <span data-ng-bind="vm.application.created | date:'mediumDate'"></span>
+      by
+      <span data-ng-if="vm.application.user"
+            data-ng-bind="vm.application.user.displayName"></span>
+      <span data-ng-if="!vm.application.user">Deleted User</span>
+    </em>
+  </small>
+  <p class="lead" data-ng-bind="vm.scholorship.content"></p>
+</section>

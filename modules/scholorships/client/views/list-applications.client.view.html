@@ -1,0 +1,22 @@
+<section>
+  <div class="page-header">
+    <h1>Stipendiumansökningar</h1>
+  </div>
+  <div class="list-group">
+    <a data-ng-repeat="application in vm.applications"
+       data-ui-sref="applications.view({ applicationId: application._id })"
+       class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span data-ng-bind="application.created | date:'mediumDate'"></span>
+        by
+        <span data-ng-if="application.user" data-ng-bind="application.user.displayName"></span>
+        <span data-ng-if="!application.user">Deleted User</span>
+      </small>
+      <h4 class="list-group-item-heading" data-ng-bind="application.name"></h4>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" data-ng-if="vm.applications.$resolved && !vm.applications.length">
+    No Applications yet, why don't you <a data-ui-sref="applications.create">create one</a>?
+  </div>
+</section>
