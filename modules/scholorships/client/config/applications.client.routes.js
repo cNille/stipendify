@@ -29,14 +29,13 @@
         }
       })
       .state('applications.create', {
-        url: '/create',
+        url: '/create/:scholorshipId/:scholorshipName',
         templateUrl: 'modules/scholorships/client/views/form-application.client.view.html',
         controller: 'ApplicationsController',
         controllerAs: 'vm',
         params: {
           scholorshipId: String,
           scholorshipName: String,
-          hiddenParams: 'YES'
         },
         resolve: {
           applicationResolve: newApplication,

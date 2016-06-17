@@ -14,12 +14,56 @@
     vm.authentication = Authentication;
     vm.application = application;
     $scope.user = vm.authentication.user;
+    var oldUser = vm.authentication.user;
+    console.log(oldUser);
     vm.scholorshipName = $stateParams.scholorshipName;
     vm.scholorshipId = $stateParams.scholorshipId;
     vm.error = null;
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
+
+    // Update a user profile
+    $scope.updateUserProfile = function () {
+      $scope.success = $scope.error = null;
+
+      console.log($scope.user);
+      console.log($scope.user === oldUser);
+      //$scope.user._v = '';
+      var myUser = new Users($scope.user);
+      myUser.$update(function (response) {
+        // Update success, remove error-messages.
+        $scope.$broadcast('show-errors-reset', 'applicationForm');
+        $scope.success = true;
+
+        // Update view-models.
+        Authentication.user = response;
+        $scope.user = response;
+
+        // Add userdata to application
+        vm.application.user = vm.authentication.user._id;
+        vm.application.scholorship = vm.scholorshipId;
+        vm.application.data = {
+          'name': $scope.user.displayName,
+        'personNumber': $scope.user.personNumber,
+        'telephone': $scope.user.telephone,
+        'streetaddress': $scope.user.streetaddress,
+        'zipCode': $scope.user.zipCode,
+        'city': $scope.user.city,
+        'highschool': $scope.user.highschool,
+        'bank': $scope.user.bank,
+        'bankaccont': $scope.user.bankaccount,
+        'union': $scope.user.union,
+        'scholorshipName': $scope.scholorshipName
+        };
+
+
+        // Create application
+        vm.application.$save($scope.successCallback, $scope.errorCallback);
+      }, function (response) {
+        $scope.error = response.data.message;
+      });
+    };
 
     // Add semester in form.
     $scope.addSemester = function(semesters, addToFront){
@@ -72,45 +116,6 @@
       event.preventDefault();
       return;
     }
-      
-    // Update a user profile
-    $scope.updateUserProfile = function () {
-      $scope.success = $scope.error = null;
-
-      var user = new Users($scope.user);
-      user.$update(function (response) {
-        // Update success, remove error-messages.
-        $scope.$broadcast('show-errors-reset', 'applicationForm');
-        $scope.success = true;
-
-        // Update view-models.
-        Authentication.user = response;
-        $scope.user = response;
-
-        // Add userdata to application
-        vm.application.user = vm.authentication.user._id;
-        vm.application.scholorship = vm.scholorshipId;
-        vm.application.data = {
-          'name': $scope.user.displayName,
-          'personNumber': $scope.user.personNumber,
-          'telephone': $scope.user.telephone,
-          'streetaddress': $scope.user.streetaddress,
-          'zipCode': $scope.user.zipCode,
-          'city': $scope.user.city,
-          'highschool': $scope.user.highschool,
-          'bank': $scope.user.bank,
-          'bankaccont': $scope.user.bankaccount,
-          'union': $scope.user.union,
-          'scholorshipName': $scope.scholorshipName
-        };
-        
-
-        // Create application
-        vm.application.$save($scope.successCallback, $scope.errorCallback);
-      }, function (response) {
-        $scope.error = response.data.message;
-      });
-    };
 
     // Remove existing Application
     function remove() {
