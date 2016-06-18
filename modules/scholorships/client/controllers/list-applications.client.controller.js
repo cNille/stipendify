@@ -5,9 +5,9 @@
     .module('scholorships')
     .controller('ApplicationsListController', ApplicationsListController);
 
-  ApplicationsListController.$inject = ['ApplicationsService', 'SemesterService', '$scope'];
+  ApplicationsListController.$inject = ['ApplicationsService', 'SemesterService', '$scope', '$http'];
 
-  function ApplicationsListController(ApplicationsService, SemesterService, $scope) {
+  function ApplicationsListController(ApplicationsService, SemesterService, $scope, $http) {
     var vm = this;
 
     vm.semesters = SemesterService.getLastFourSemesters({});
@@ -27,12 +27,12 @@
 
     $scope.checkName = function(data, id) {
       if (id === 2 && data !== 'awesome') {
-        return "Username 2 should be `awesome`";
+        return 'Username 2 should be `awesome`';
       }
     };
 
     $scope.saveApplication = function(data, id) {
-      angular.extend(data, {id: id});
+      angular.extend(data, { id: id });
       return $http.post('/saveUser', data);
     };
 
