@@ -22,7 +22,7 @@ var ApplicationSchema = new Schema({
   'semesterNation': String,
   data: {
     'allowance': { type: Number, default: 0 },
-    'name': String,
+    'displayName': String,
     'personNumber': String,
     'telephone': String,
     'streetaddress': String,

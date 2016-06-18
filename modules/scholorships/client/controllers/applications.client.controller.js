@@ -11,12 +11,12 @@
   function ApplicationsController ($scope, $state, Authentication, application, $stateParams, Users, SemesterService) {
     var vm = this;
 
-    vm.scholorshipName = $stateParams.scholorshipName;
     vm.scholorshipId = $stateParams.scholorshipId;
     vm.authentication = Authentication;
     vm.application = application;
 
     $scope.isEditing = vm.scholorshipId === undefined && vm.application._id;
+    vm.scholorshipName = $scope.isEditing ? vm.application.data.scholorshipName : $stateParams.scholorshipName;
     $scope.user = $scope.isEditing ? vm.application.data : vm.authentication.user;
 
     vm.semesterStudied = vm.application.semesterStudied; 
@@ -25,6 +25,53 @@
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
+
+    // Create question Array
+    $scope.personQuestions = [ 
+      { 
+        name : "personnummer", 
+        question : "Personnummer", 
+        placeholder : "XXXXXXX-XXXX", 
+        variable : $scope.user.personNumber 
+      }, { 
+        name : "telephone", 
+        question : "Telefon", 
+        placeholder : "07XX-XX XX XX", 
+        variable : $scope.user.telephone 
+      }, { 
+        name : "streetaddress", 
+        question : "Gatuadress", 
+        variable : $scope.user.streetaddress 
+      }, { 
+        name : "zipcode", 
+        question : "Post nummer", 
+        variable : $scope.user.zipCode 
+      }, { 
+        name : "city", 
+        question : "city", 
+        variable : $scope.user.city 
+      }, { 
+        name : "highshool", 
+        question : "Gymnasium och ort", 
+        variable : $scope.user.highschool 
+      }, { 
+        name : "bank", 
+        question : "Bank", 
+        variable : $scope.user.bank 
+      }, { 
+        name : "bankaccount", 
+        question : "Bankkonto", 
+        variable : $scope.user.bankaccount 
+      }, { 
+        name : "union", 
+        question : "Kårtillhörighet", 
+        variable : $scope.user.union 
+      },
+    ];
+  
+    $scope.updateModels = function() {
+      $scope.user.personNumber = $scope.personQuestions[0].variable;
+    };
 
     // Update a user profile
     $scope.updateUserProfile = function () {
@@ -40,34 +87,47 @@
         Authentication.user = response;
         $scope.user = response;
 
-        // Add userdata to application
-        vm.application.user = vm.authentication.user._id;
-        vm.application.scholorship = vm.scholorshipId;
-        vm.application.semesterStudied = vm.semesterStudied;
-        vm.application.semesterNation = vm.semesterNation;
-        vm.application.data = {
-          'name': $scope.user.displayName,
-          'personNumber': $scope.user.personNumber,
-          'telephone': $scope.user.telephone,
-          'streetaddress': $scope.user.streetaddress,
-          'zipCode': $scope.user.zipCode,
-          'city': $scope.user.city,
-          'highschool': $scope.user.highschool,
-          'bank': $scope.user.bank,
-          'bankaccount': $scope.user.bankaccount,
-          'union': $scope.user.union,
-          'scholorshipName': vm.scholorshipName,
-          'universitypoints': $scope.user.universitypoints,
-        };
+        $scope.updateApplication();
 
-
-        // Create application
-        vm.application.$save($scope.successCallback, $scope.errorCallback);
       }, function (response) {
         $scope.error = response.data.message;
       });
     };
 
+    $scope.updateApplication = function() {
+      // Add userdata to application
+      vm.application.user = vm.authentication.user._id;
+      vm.application.scholorship = vm.scholorshipId;
+      vm.application.semesterStudied = vm.semesterStudied;
+      vm.application.semesterNation = vm.semesterNation;
+  
+      $scope.user.universitypoints.semesters = $scope.user.universitypoints.semesters.filter(function (semester) {
+        return semester.points !== 0;
+      });
+
+      vm.application.data = {
+        'displayName': $scope.user.displayName,
+        'personNumber': $scope.user.personNumber,
+        'telephone': $scope.user.telephone,
+        'streetaddress': $scope.user.streetaddress,
+        'zipCode': $scope.user.zipCode,
+        'city': $scope.user.city,
+        'highschool': $scope.user.highschool,
+        'bank': $scope.user.bank,
+        'bankaccount': $scope.user.bankaccount,
+        'union': $scope.user.union,
+        'scholorshipName': vm.scholorshipName,
+        'universitypoints': $scope.user.universitypoints,
+      };
+
+      // Save application
+      vm.application.$save($scope.successCallback, $scope.errorCallback);
+    };
+
+    $scope.addSemester = function (semesters){
+      SemesterService.addSemester(semesters, false);
+    };
+    
     function fillSemesterArray(semesters){
       var thisSemester = SemesterService.getThisSemesterName();
       while (semesters.length > 0 && semesters[0].name !== thisSemester){
@@ -97,15 +157,18 @@
     // Save Application
     function save(isValid) {
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.form.applicationForm');
+        vm.error = 'Du har missat att fylla i alla obligatoriska fält.';
+        $scope.$broadcast('show-errors-check-validity', 'applicationForm');
         return false;
       }
 
-      // Applications arent allowed to update.
-      if (!vm.application._id) {
-        // Update user. When success, create application.
+      $scope.updateModels();
+
+      if ($scope.isEditing) {
+        $scope.updateApplication();
+      } else {
+        $scope.updateUserProfile();
       }
-      $scope.updateUserProfile();
 
       $scope.successCallback = function (res) {
         var nextState = $scope.isEditing ? 'applications.list' : 'applications.submitted';

@@ -23,8 +23,6 @@
       //$scope.applications = orderBy(friends, $scope.propertyName, $scope.reverse);
     };
 
-
-
     $scope.checkName = function(data, id) {
       if (id === 2 && data !== 'awesome') {
         return 'Username 2 should be `awesome`';
@@ -37,24 +35,10 @@
     };
 
     // remove user
-    $scope.removeUser = function(index) {
-      $scope.users.splice(index, 1);
+    $scope.removeApplication = function(index) {
+      //$scope.applications.splice(index, 1);
     };
-
-    // add user
-    $scope.addUser = function() {
-      $scope.inserted = {
-        id: $scope.users.length+1,
-        name: '',
-        status: null,
-        group: null 
-      };
-      $scope.users.push($scope.inserted);
-    };
-
-
-
-
-
   }
+
+
 })();

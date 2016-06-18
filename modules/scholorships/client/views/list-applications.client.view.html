@@ -22,7 +22,7 @@
         <td>
           <!-- editable name (text with validation) -->
           <span editable-text="a.data.name" e-name="name" e-form="rowform" e-required>
-            {{ a.data.name }}
+            {{ a.data.displayName }}
           </span>
         </td>
         <td>
@@ -45,7 +45,7 @@
         </td>
         <td style="white-space: nowrap">
           <!-- form -->
-          <form editable-form name="rowform" onbeforesave="saveUser($data, user.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == user">
+          <form editable-form name="rowform" onbeforesave="saveApplication($data, application.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == application">
             <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
               save
             </button>
@@ -55,8 +55,8 @@
           </form>
           <div class="buttons" ng-show="!rowform.$visible">
             <a data-ui-sref="applications.view({ applicationId: a._id })" class="btn btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a>
-            <button class="btn btn-warning" ng-click="rowform.$show()"><i class="glyphicon glyphicon-edit"></i></button>
-            <button class="btn btn-danger" ng-click="removeUser($index)"><i class="glyphicon glyphicon-trash"></i></button>
+            <button class="btn btn-warning" type="button" ng-click="rowform.$show()"><i class="glyphicon glyphicon-edit"></i></button>
+            <button class="btn btn-danger" ng-click="removeApplication($index)"><i class="glyphicon glyphicon-trash"></i></button>
           </div>  
         </td>
       </tr>

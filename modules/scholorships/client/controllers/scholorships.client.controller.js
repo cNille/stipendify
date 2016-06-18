@@ -40,7 +40,7 @@
 
     // Remove existing Scholorship
     function remove() {
-      if (confirm('Are you sure you want to delete?')) {
+      if (confirm('Är du säker på att du vill radera?')) {
         vm.scholorship.$remove($state.go('scholorships.list'));
       }
     }

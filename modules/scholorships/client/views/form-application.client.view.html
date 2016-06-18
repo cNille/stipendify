@@ -4,85 +4,43 @@
       <h1>Ansök stipendier från: {{ vm.scholorshipName }}</h1>
     </div>
     <div ng-if="isEditing">
-      <h1>{{ vm.application.data.name + ' ansöker ' + (vm.application.data.scholorshipName || '...') }}</h1>
+      <h1>{{ vm.application.data.displayName + ' ansöker ' + (vm.application.data.scholorshipName || '...') }}</h1>
     </div>
   </div>
-  <div class="col-md-4">
-    <form name="vm.form.applicationForm" class="form-horizontal" ng-submit="vm.save(vm.form.applicationForm.$valid)" novalidate>
+  <div class="col-md-12">
+    <form name="applicationForm" class="form-horizontal" role="form" ng-submit="vm.save(applicationForm.$valid)" novalidate>
 
-        <div class="form-group">
-          <label class="control-label" for="personnumber">Personnummer</label>
-          <input name="personnumber" type="text" ng-model="user.personNumber" id="personnumber" class="form-control" placeholder="YYMMDD-XXXX" required>
-          <div ng-messages="vm.form.applicationForm.personnumber.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Personnummer är obligatorisk.</p>
-            <span class="text-danger" ng-show="vm.form.applicationForm.personnumber.$error.date">Inte ett giltigt datum!</span>
+      <div class="col-md-5">
+
+
+        <h2>Personuppgifter</h2>
+
+        <div class="form-group" ng-repeat="q in personQuestions">
+          <label class="control-label col-sm-3" for="{{ q.name }}">{{ q.question }}:</label>
+          <div class="col-sm-9">
+            <input name="{{ q.name }}" type="text" ng-model="q.variable" id="{{ q.name }}" class="form-control" placeholder="{{ q.placeholder }}" required>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="telephone">Telefonnummer</label>
-          <input name="telephone" type="text" ng-model="user.telephone" id="telephone" class="form-control" placeholder="07XX-XX XX XX" required>
-          <div ng-messages="vm.form.applicationForm.telephone.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Telefonnummer är obligatorisk.</p>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="streetaddress">Gatuadress</label>
-          <input name="streetaddress" type="text" ng-model="user.streetaddress" id="streetaddress" class="form-control" placeholder="{{ user.streetaddress }}" required>
-          <div ng-messages="vm.form.applicationForm.streetaddress.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Gatuadress är obligatorisk.</p>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="zipcode">Post nummer</label>
-          <input name="zipcode" type="text" ng-model="user.zipCode" id="zipcode" class="form-control" placeholder="{{ user.zipCode }}" required>
-          <div ng-messages="vm.form.applicationForm.zipcode.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Postnr är obligatorisk.</p>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="city">Ort</label>
-          <input name="city" type="text" ng-model="user.city" id="city" class="form-control" placeholder="{{ user.city }}" required>
-          <div ng-messages="vm.form.applicationForm.city.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Ort är obligatorisk.</p>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="highschool">Gymnasium och ort</label>
-          <input name="highschool" type="text" ng-model="user.highschool" id="highschool" class="form-control" placeholder="{{ user.highschool }}" required>
-          <div ng-messages="vm.form.applicationForm.highschool.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Gymnasium är obligatorisk.</p>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="bank">Bank</label>
-          <input name="bank" type="text" ng-model="user.bank" id="bank" class="form-control" placeholder="{{ user.bank }}" required>
-          <div ng-messages="vm.form.applicationForm.bank.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Bank är obligatorisk.</p>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="bankaccount">Bankkonto</label>
-          <input name="bankaccount" type="text" ng-model="user.bankaccount" id="bankaccount" class="form-control" placeholder="{{ user.bankaccount }}" required>
-          <div ng-messages="vm.form.applicationForm.bankaccount.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Bankkonto är obligatorisk.</p>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="union">Kårtillhörighet</label>
-          <input name="union" type="text" ng-model="user.union" id="union" class="form-control" placeholder="{{ user.union }}" required>
-          <div ng-messages="vm.form.applicationForm.union.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Kårtillhörighet är obligatorisk.</p>
+          <div ng-messages="applicationForm.{{ q.name }}.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">{{ q.question }} är obligatorisk.</p>
           </div>
         </div>
 
+
+
+      </div>
+      <div class="col-md-5 col-md-offset-1">
         <!-- TODO: Add university-points, assignments, earlierScholorships and interruption  --!>
         <div class="form-group">
-          <h4>Högskolepoäng</h4>
-          <label class="control-label" for="total">Totalt</label>
-          <input name="total" type="number" ng-model="user.universitypoints.total" id="total" class="form-control" placeholder="total" required>
+          <h2>Högskolepoäng</h2>
+          <label class="control-label col-sm-3" for="total">Totalt:</label>
+          <div class="col-sm-9">
+            <input name="total" type="number" ng-model="user.universitypoints.total" id="total" class="form-control" placeholder="total" required>
+          </div>
           <div ng-repeat="semester in user.universitypoints.semesters">
-            <label class="control-label" for="{{ semester.name }}">{{ semester.name }}</label>
-            <input name="{{ semester.name }}" type="number" ng-model="semester.points" id="{{ semester.name }}point" class="form-control" placeholder="{{ semester.points }}" required>
+            <label class="control-label col-sm-3" for="{{ semester.name }}">{{ semester.name }}:</label>
+            <div class="col-sm-9">
+              <input name="{{ semester.name }}" type="number" ng-model="semester.points" id="{{ semester.name }}point" class="form-control" placeholder="{{ semester.points }}" required>
+            </div>
 
           </div>
           <button ng-click="addSemester(user.universitypoints.semesters)" class="btn btn-warning">Lägg till äldre termin</button>
@@ -91,26 +49,35 @@
 
 
         <div class="form-group">
-          <label class="control-label" for="semesterstudied">Antal terminer studerat ink nuvarande</label>
-          <input name="semesterstudied" type="text" ng-model="vm.semesterStudied" id="semesterstudied" class="form-control" required>
-          <div ng-messages="vm.form.applicationForm.semesterstudied.$error" role="alert">
+          <label class="control-label col-sm-3" for="semesterstudied">Antal terminer studerat ink nuvarande</label>
+          <div class="col-sm-9">
+            <input name="semesterstudied" type="text" ng-model="vm.semesterStudied" id="semesterstudied" class="form-control" required>
+          </div>
+          <div ng-messages="applicationForm.semesterstudied.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Antal terminer studerat är obligatorisk.</p>
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label" for="semesternation">Antal terminer i nationen ink nuvarande</label>
-          <input name="semesternation" type="text" ng-model="vm.semesterNation" id="semesternation" class="form-control" required>
-          <div ng-messages="vm.form.applicationForm.semesternation.$error" role="alert">
+          <label class="control-label col-sm-3" for="semesternation">Antal terminer i nationen ink nuvarande</label>
+          <div class="col-sm-9">
+            <input name="semesternation" type="text" ng-model="vm.semesterNation" id="semesternation" class="form-control" required>
+          </div>
+          <div ng-messages="applicationForm.semesternation.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Antal terminer i nationen är obligatorisk.</p>
           </div>
         </div>
-        <div class="form-group">
+      <div class="form-group">
         <div ng-if="isEditing">
           <a data-ui-sref="applications.list" class="btn btn-primary">Tillbaka</a>
         </div>
-          <button type="submit" class="btn btn-default">{{vm.application._id ? 'Update' : 'Create'; }}</button>
+        <button type="submit" class="btn btn-default">{{vm.application._id ? 'Uppdatera' : 'Skicka ansökan'; }}</button>
+        <div ng-bind="vm.error"></div> 
+      </div>
+    </div>
+      <div class="row">
+        <div class="col-md-4">
         </div>
-       <div ng-bind="vm.error"></div> 
+      </div>
     </form>
   </div>
 </section>
