@@ -20,7 +20,12 @@
           newSemester = name === 'VT' ? 'HT' + (year - !addToFront).toString() : 'VT' + (year + addToFront).toString();
         } 
         var obj = { 'name': newSemester, 'points': 0 };
-        addToFront ? semesters.unshift(obj) : semesters.push(obj);
+        if(addToFront){
+          semesters.unshift(obj);
+        } else {
+          semesters.push(obj);
+        }
+
       },
       getThisSemesterName: function (){ 
         var today = new Date();
