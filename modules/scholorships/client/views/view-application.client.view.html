@@ -1,6 +1,6 @@
 <section>
   <div class="page-header">
-    <h1 data-ng-bind="vm.application.name"></h1>
+    <h1 data-ng-bind="vm.application.data.name"></h1>
   </div>
   <div class=".col-md-6 .col-md-offset-2">
     <label>Antal terminer studerat:</label><div ng-bind="vm.application.semesterStudied"></div>
@@ -12,7 +12,11 @@
     
   </div>
   <div class="pull-right"
-       data-ng-show="vm.appliciation.isCurrentUserOwner">
+       data-ng-show="(vm.authentication.user.roles.indexOf('admin')+1)">
+    <a class="btn btn-primary"
+       data-ui-sref="applications.edit({ applicationId: vm.application._id })">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
     <a class="btn btn-primary" data-ng-click="vm.remove()">
       <i class="glyphicon glyphicon-trash"></i>
     </a>

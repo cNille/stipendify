@@ -14,7 +14,7 @@ module.exports = function(app) {
 
   app.route('/api/applications/:applicationId').all(applicationsPolicy.isAllowed)
     .get(applications.read)
-    .put(applications.update)
+    .post(applications.update)
     .delete(applications.delete);
 
   // Finish by binding the Application middleware

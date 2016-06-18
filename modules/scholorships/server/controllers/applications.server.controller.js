@@ -42,14 +42,15 @@ exports.read = function(req, res) {
 };
 
 /**
- * Update a Application - DEPRICATED, not allowed to update a created application
+ * Update a Application - unDEPRICATED, now allowed to update a created application
  */
 exports.update = function(req, res) {
+  /*
   return res.status(400).send({
     message: 'Not allowed to update application after creation'
   });
+  */
 
-  /*
   var application = req.application ;
 
   application = _.extend(application , req.body);
@@ -63,7 +64,6 @@ exports.update = function(req, res) {
       res.jsonp(application);
     }
   });
-  */
 };
 
 /**

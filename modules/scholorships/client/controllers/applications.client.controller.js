@@ -11,13 +11,16 @@
   function ApplicationsController ($scope, $state, Authentication, application, $stateParams, Users, SemesterService) {
     var vm = this;
 
-    vm.authentication = Authentication;
-    vm.application = application;
-    $scope.user = vm.authentication.user;
-    var oldUser = vm.authentication.user;
-    console.log(oldUser);
     vm.scholorshipName = $stateParams.scholorshipName;
     vm.scholorshipId = $stateParams.scholorshipId;
+    vm.authentication = Authentication;
+    vm.application = application;
+
+    $scope.isEditing = vm.scholorshipId === undefined && vm.application._id;
+    $scope.user = $scope.isEditing ? vm.application.data : vm.authentication.user;
+
+    vm.semesterStudied = vm.application.semesterStudied; 
+    vm.semesterNation = vm.application.semesterNation;
     vm.error = null;
     vm.form = {};
     vm.remove = remove;
@@ -40,6 +43,8 @@
         // Add userdata to application
         vm.application.user = vm.authentication.user._id;
         vm.application.scholorship = vm.scholorshipId;
+        vm.application.semesterStudied = vm.semesterStudied;
+        vm.application.semesterNation = vm.semesterNation;
         vm.application.data = {
           'name': $scope.user.displayName,
           'personNumber': $scope.user.personNumber,
@@ -49,9 +54,10 @@
           'city': $scope.user.city,
           'highschool': $scope.user.highschool,
           'bank': $scope.user.bank,
-          'bankaccont': $scope.user.bankaccount,
+          'bankaccount': $scope.user.bankaccount,
           'union': $scope.user.union,
-          'scholorshipName': $scope.scholorshipName
+          'scholorshipName': vm.scholorshipName,
+          'universitypoints': $scope.user.universitypoints,
         };
 
 
@@ -72,7 +78,7 @@
     fillSemesterArray($scope.user.universitypoints.semesters);
 
     // Check that there is user- and scholorship ids.
-    var shouldSeeList = vm.scholorshipId === undefined && vm.authentication.user._id === undefined ;
+    var shouldSeeList = vm.scholorshipId === undefined && vm.application._id === undefined ;
     
     // should NOT be able to send application forms.
     if(shouldSeeList) {
@@ -98,11 +104,12 @@
       // Applications arent allowed to update.
       if (!vm.application._id) {
         // Update user. When success, create application.
-        $scope.updateUserProfile();
       }
+      $scope.updateUserProfile();
 
       $scope.successCallback = function (res) {
-        $state.go('applications.submitted', {
+        var nextState = $scope.isEditing ? 'applications.list' : 'applications.submitted';
+        $state.go(nextState, {
           applicationId: res._id
         });
         event.preventDefault();

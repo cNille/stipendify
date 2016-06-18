@@ -3,39 +3,64 @@
     <h1>Stipendiumansökningar</h1>
   </div>
   <div class="list-group">
-    <a data-ng-repeat="application in vm.applications"
-       data-ui-sref="applications.view({ applicationId: application._id })"
-       class="list-group-item">
-      <small class="list-group-item-text">
-        Posted on
-        <span data-ng-bind="application.created | date:'mediumDate'"></span>
-        by
-        <span data-ng-if="application.user" data-ng-bind="application.user.displayName"></span>
-        <span data-ng-if="!application.user">Deleted User</span>
-      </small>
-      <h4 class="list-group-item-heading" data-ng-bind="application.name"></h4>
-    </a>
-    <table class="applications">
-    <tr>
-      <th>
-        <button ng-click="sortBy('displayName')">Namn</button>
-        <span class="sortorder" ng-show="propertyName === 'displayName'" ng-class="{reverse: reverse}"></span>
-      </th>
-      <th>
-        <button ng-click="sortBy('phone')">Phone Number</button>
-        <span class="sortorder" ng-show="propertyName === 'phone'" ng-class="{reverse: reverse}"></span>
-      </th>
-      <th>
-        <button ng-click="sortBy('age')">Age</button>
-        <span class="sortorder" ng-show="propertyName === 'age'" ng-class="{reverse: reverse}"></span>
-      </th>
-    </tr>
-    <tr ng-repeat="friend in friends">
-      <td>{{friend.name}}</td>
-      <td>{{friend.phone}}</td>
-      <td>{{friend.age}}</td>
-    </tr>
-  </table>
+    <table class="table table-bordered table-hover table-condensed">
+      <tr style="font-weight: bold">
+        <td style="width:20%">Personnummer</td>
+        <td style="width:20%">Namn</td>
+        <td style="width:10%">Högskolepoäng</td>
+        <td style="width:10%">Bank</td>
+        <td style="width:20%">Bankkonto</td>
+        <td style="width:25%"></td>
+      </tr>
+      <tr ng-repeat="a in applications">
+        <td>
+          <!-- editable personnumber (text with validation) -->
+          <span editable-text="a.data.personNumber" e-name="personnumber" e-form="rowform" e-required>
+            {{ a.data.personNumber || 'XXXXXX-XXXX' }}
+          </span>
+        </td>
+        <td>
+          <!-- editable name (text with validation) -->
+          <span editable-text="a.data.name" e-name="name" e-form="rowform" e-required>
+            {{ a.data.name }}
+          </span>
+        </td>
+        <td>
+          <!-- editable universitypoints (text with validation) -->
+          <span editable-text="a.data.universitypoints.total" e-name="universitypoints" e-form="rowform" e-required>
+            {{ a.data.universitypoints.total || '0' }}
+          </span>
+        </td>
+        <td>
+          <!-- editable bank (text with validation) -->
+          <span editable-text="a.data.bank" e-name="bank" e-form="rowform" e-required>
+            {{ a.data.bank || '' }}
+          </span>
+        </td>
+        <td>
+          <!-- editable username (text with validation) -->
+          <span editable-text="a.data.bankaccount" e-name="bankaccount" e-form="rowform" e-required>
+            {{ a.data.bankaccount || '' }}
+          </span>
+        </td>
+        <td style="white-space: nowrap">
+          <!-- form -->
+          <form editable-form name="rowform" onbeforesave="saveUser($data, user.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == user">
+            <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+              save
+            </button>
+            <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+              cancel
+            </button>
+          </form>
+          <div class="buttons" ng-show="!rowform.$visible">
+            <a data-ui-sref="applications.view({ applicationId: a._id })" class="btn btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a>
+            <button class="btn btn-warning" ng-click="rowform.$show()"><i class="glyphicon glyphicon-edit"></i></button>
+            <button class="btn btn-danger" ng-click="removeUser($index)"><i class="glyphicon glyphicon-trash"></i></button>
+          </div>  
+        </td>
+      </tr>
+    </table>
   </div>
   <div class="alert alert-warning text-center" data-ng-if="vm.applications.$resolved && !vm.applications.length">
     No Applications yet, why don't you <a data-ui-sref="applications.create">create one</a>?

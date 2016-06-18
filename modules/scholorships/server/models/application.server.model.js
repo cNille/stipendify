@@ -18,6 +18,8 @@ var ApplicationSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Scholorship'
   },
+  'semesterStudied': String,
+  'semesterNation': String,
   data: {
     'allowance': { type: Number, default: 0 },
     'name': String,
@@ -28,11 +30,10 @@ var ApplicationSchema = new Schema({
     'city': String,
     'highschool': String,
     'bank': String,
-    'bankaccont': String,
+    'bankaccount': String,
     'union': String,
-    'semesterStudied': String,
-    'semesterNation': String,
-    'scholorshipName': String
+    'scholorshipName': String,
+    'universitypoints': { "total" : Number, "semesters" : [ { "name": String, "points" : Number } ] }
   },
   created: {
     type: Date,
