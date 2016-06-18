@@ -14,7 +14,7 @@
         if(arrLength === 0){
           newSemester = this.getThisSemesterName();
         } else {
-          var lastSemester =  addToFront ? semesters[0].name : semesters[arrLength-1].name;
+          var lastSemester = addToFront ? semesters[0].name : semesters[arrLength-1].name;
           var year = parseInt(lastSemester.substring(2));  
           var name = lastSemester.substring(0,2);  
           newSemester = name === 'VT' ? 'HT' + (year - !addToFront).toString() : 'VT' + (year + addToFront).toString();
