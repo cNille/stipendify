@@ -35,12 +35,5 @@
       state: 'applications.list',
       roles: ['stipendiumansvarig']
     });
-
-    // Add the dropdown create item
-    Menus.addSubMenuItem('topbar', 'scholorships', {
-      title: 'Ansök om stipendium',
-      state: 'applications.create',
-      roles: ['user']
-    });
   }
 })();
