@@ -5,14 +5,17 @@
     .module('scholorships')
     .controller('ApplicationsListController', ApplicationsListController);
 
-  ApplicationsListController.$inject = ['ApplicationsService', 'SemesterService', '$scope', '$http'];
+  ApplicationsListController.$inject = ['ApplicationsService', 'SemesterService', '$scope', '$http', '$stateParams'];
 
-  function ApplicationsListController(ApplicationsService, SemesterService, $scope, $http) {
+  function ApplicationsListController(ApplicationsService, SemesterService, $scope, $http, $stateParams) {
     var vm = this;
 
+    vm.scholorshipId = $stateParams.scholorshipId;
     vm.semesters = SemesterService.getLastFourSemesters({});
-    $scope.applications = ApplicationsService.query(function (data){
-      $scope.applications = data;
+    $scope.applications = ApplicationsService.query({ scholorship : vm.scholorshipId }, function(data) {
+      // TODO: Find better solution than to filter here.
+      $scope.applications = data.filter(function(d){ return d.scholorship === vm.scholorshipId; });
+      $scope.scholorshipName = data[0].data.scholorshipName;
     });
 
     $scope.propertyName = 'age';
