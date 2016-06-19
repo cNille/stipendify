@@ -18,6 +18,16 @@
         url: '/tack',
         templateUrl: 'modules/scholorships/client/views/submitted-application.client.view.html'
       })
+      .state('applications.scholorlist', {
+        url: '/scholorship/:scholorshipId',
+        templateUrl: 'modules/scholorships/client/views/list-applications.client.view.html',
+        controller: 'ApplicationsListController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['stipendiumansvarig', 'admin'],
+          pageTitle: 'Applications List'
+        }
+      })
       .state('applications.list', {
         url: '',
         templateUrl: 'modules/scholorships/client/views/list-applications.client.view.html',
@@ -33,10 +43,6 @@
         templateUrl: 'modules/scholorships/client/views/form-application.client.view.html',
         controller: 'ApplicationsController',
         controllerAs: 'vm',
-        params: {
-          scholorshipId: String,
-          scholorshipName: String,
-        },
         resolve: {
           applicationResolve: newApplication,
           semestersjs:  function($http){
