@@ -7,11 +7,18 @@
     <label>Slutdatum:</label><div ng-bind="endString"></div>
     <div ng-bind-html="htmlDescription"></div>
     
-        <button onclick="window.history.back();" class="btn btn-default ">Tillbaka</button>
+    <button onclick="window.history.back();" class="btn btn-default ">Tillbaka</button>
     <a class="btn btn-primary"
        data-ui-sref="applications.create({ scholorshipId: vm.scholorship._id, scholorshipName: vm.scholorship.name})">
       <i class="glyphicon glyphicon-plus-sign"></i>
       Ansök nu
+    </a>
+    <hr />
+    <h4>För admin</h4>
+    <a class="btn btn-primary"
+       data-ui-sref="applications.scholorlist({ scholorshipId: vm.scholorship._id})">
+      <i class="glyphicon glyphicon-th-list"></i>
+       Se alla inkomna ansökningar
     </a>
   </div>
   <div class="pull-right"
