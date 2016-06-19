@@ -71,6 +71,14 @@
   
     $scope.updateModels = function() {
       $scope.user.personNumber = $scope.personQuestions[0].variable;
+      $scope.user.telephone = $scope.personQuestions[1].variable;
+      $scope.user.streetaddress = $scope.personQuestions[2].variable;
+      $scope.user.zipCode = $scope.personQuestions[3].variable;
+      $scope.user.city = $scope.personQuestions[4].variable;
+      $scope.user.highschool = $scope.personQuestions[5].variable;
+      $scope.user.bank = $scope.personQuestions[6].variable;
+      $scope.user.bankaccount = $scope.personQuestions[7].variable;
+      $scope.user.union = $scope.personQuestions[8].variable;
     };
 
     // Update a user profile
