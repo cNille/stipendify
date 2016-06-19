@@ -44,18 +44,8 @@
           </span>
         </td>
         <td style="white-space: nowrap">
-          <!-- form -->
-          <form editable-form name="rowform" onbeforesave="saveApplication($data, application.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == application">
-            <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
-              save
-            </button>
-            <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
-              cancel
-            </button>
-          </form>
           <div class="buttons" ng-show="!rowform.$visible">
             <a data-ui-sref="applications.view({ applicationId: a._id })" class="btn btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a>
-            <button class="btn btn-warning" type="button" ng-click="rowform.$show()"><i class="glyphicon glyphicon-edit"></i></button>
             <button class="btn btn-danger" ng-click="removeApplication($index)"><i class="glyphicon glyphicon-trash"></i></button>
           </div>  
         </td>
