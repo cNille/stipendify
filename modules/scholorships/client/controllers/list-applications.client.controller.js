@@ -23,20 +23,15 @@
       //$scope.applications = orderBy(friends, $scope.propertyName, $scope.reverse);
     };
 
-    $scope.checkName = function(data, id) {
-      if (id === 2 && data !== 'awesome') {
-        return 'Username 2 should be `awesome`';
-      }
-    };
-
-    $scope.saveApplication = function(data, id) {
-      angular.extend(data, { id: id });
-      return $http.post('/saveUser', data);
-    };
-
-    // remove user
+    // Remove Application
     $scope.removeApplication = function(index) {
-      //$scope.applications.splice(index, 1);
+      if(confirm('Är du säker på att du vill radera ansökningen?')){
+        // Send delete request to server.
+        ApplicationsService.delete({ applicationId: $scope.applications[index]._id }, function(err){
+          // Remove deleted application from $scope
+          $scope.applications.splice(index, 1);
+        });
+      }
     };
   }
 
