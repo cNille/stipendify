@@ -70,7 +70,8 @@
         <div ng-if="isEditing">
           <a data-ui-sref="applications.list" class="btn btn-primary">Tillbaka</a>
         </div>
-        <button type="submit" class="btn btn-default">{{vm.application._id ? 'Uppdatera' : 'Skicka ansökan'; }}</button>
+        <button type="submit" class="btn btn-primary pull-right">{{vm.application._id ? 'Uppdatera' : 'Skicka ansökan'; }}</button>
+        <button onclick="window.history.back();" class="btn btn-default pull-right">Tillbaka</button>
         <div ng-bind="vm.error"></div> 
       </div>
     </div>
