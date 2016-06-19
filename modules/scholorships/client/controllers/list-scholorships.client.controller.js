@@ -12,9 +12,9 @@
 
     vm.scholorships = ScholorshipsService.query();
   
-    $scope.scholorships = ScholorshipsService.query({ }, function(data) {
+    vm.scholorships = ScholorshipsService.query({ }, function(data) {
       // TODO: Find better solution than to filter here.
-      $scope.scholorships = data.filter(function(d){ return d.startDate >= Date(); });
+      vm.scholorships = data.filter(function(d){ return d.startDate >= Date(); });
     });
   }
 })();
