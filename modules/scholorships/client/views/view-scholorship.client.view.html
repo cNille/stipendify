@@ -7,6 +7,7 @@
     <label>Slutdatum:</label><div ng-bind="endString"></div>
     <div ng-bind-html="htmlDescription"></div>
     
+        <button onclick="window.history.back();" class="btn btn-default ">Tillbaka</button>
     <a class="btn btn-primary"
        data-ui-sref="applications.create({ scholorshipId: vm.scholorship._id, scholorshipName: vm.scholorship.name})">
       <i class="glyphicon glyphicon-plus-sign"></i>
