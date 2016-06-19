@@ -29,42 +29,42 @@
     // Create question Array
     $scope.personQuestions = [ 
       { 
-        name : "personnummer", 
-        question : "Personnummer", 
-        placeholder : "XXXXXXX-XXXX", 
+        name : 'personnummer', 
+        question : 'Personnr', 
+        placeholder : 'XXXXXXX-XXXX', 
         variable : $scope.user.personNumber 
       }, { 
-        name : "telephone", 
-        question : "Telefon", 
-        placeholder : "07XX-XX XX XX", 
+        name : 'telephone', 
+        question : 'Telefon', 
+        placeholder : '07XX-XX XX XX', 
         variable : $scope.user.telephone 
       }, { 
-        name : "streetaddress", 
-        question : "Gatuadress", 
+        name : 'streetaddress', 
+        question : 'Gatuadress', 
         variable : $scope.user.streetaddress 
       }, { 
-        name : "zipcode", 
-        question : "Post nummer", 
+        name : 'zipcode', 
+        question : 'Post nummer', 
         variable : $scope.user.zipCode 
       }, { 
-        name : "city", 
-        question : "city", 
+        name : 'city', 
+        question : 'city', 
         variable : $scope.user.city 
       }, { 
-        name : "highshool", 
-        question : "Gymnasium och ort", 
+        name : 'highshool', 
+        question : 'Gymnasium och ort', 
         variable : $scope.user.highschool 
       }, { 
-        name : "bank", 
-        question : "Bank", 
+        name : 'bank', 
+        question : 'Bank', 
         variable : $scope.user.bank 
       }, { 
-        name : "bankaccount", 
-        question : "Bankkonto", 
+        name : 'bankaccount', 
+        question : 'Bankkonto', 
         variable : $scope.user.bankaccount 
       }, { 
-        name : "union", 
-        question : "Kårtillhörighet", 
+        name : 'union', 
+        question : 'Kår', 
         variable : $scope.user.union 
       },
     ];
