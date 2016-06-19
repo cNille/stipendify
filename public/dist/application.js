@@ -673,13 +673,6 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
       state: 'scholorships.create',
       roles: ['stipendiumansvarig']
     });
-
-    // Add the dropdown list applications
-    Menus.addSubMenuItem('topbar', 'scholorships', {
-      title: 'Se ansökningar',
-      state: 'applications.list',
-      roles: ['stipendiumansvarig']
-    });
   }
 })();
 
