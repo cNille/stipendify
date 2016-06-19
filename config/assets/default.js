@@ -5,8 +5,7 @@ module.exports = {
     lib: {
       css: [
         'public/lib/bootstrap/dist/css/bootstrap.css',
-        'public/lib/bootstrap/dist/css/bootstrap-theme.css',
-        'public/lib/angular-xeditable/dist/css/xeditable.css'
+        'public/lib/bootstrap/dist/css/bootstrap-theme.css'
       ],
       js: [
         'public/lib/jquery/dist/jquery.js',
@@ -18,7 +17,6 @@ module.exports = {
         'public/lib/angular-ui-utils/ui-utils.js',
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
         'public/lib/angular-file-upload/angular-file-upload.js',
-        'public/lib/angular-xeditable/dist/js/xeditable.js',
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
