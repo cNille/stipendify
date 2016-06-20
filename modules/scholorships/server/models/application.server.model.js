@@ -33,7 +33,10 @@ var ApplicationSchema = new Schema({
     'bankaccount': String,
     'union': String,
     'scholorshipName': String,
-    'universitypoints': { 'total' : Number, 'semesters' : [ { 'name': String, 'points' : Number } ] }
+    'universitypoints': { 'total' : Number, 'semesters' : [ { 'name': String, 'points' : Number } ] },
+    'assignments': [ { 'type': String, 'name' : String, 'semester' : String, 'description' : String } ],
+    'earlierScholorships': [ { 'name' : String, 'semester' : String, 'money' : Number } ],
+    'interruption': [ { 'when' : String, 'why' : String } ]
   },
   created: {
     type: Date,
