@@ -1015,11 +1015,6 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
     var vm = this;
 
     vm.scholorships = ScholorshipsService.query();
-  
-    vm.scholorships = ScholorshipsService.query({ }, function(data) {
-      // TODO: Find better solution than to filter here.
-      vm.scholorships = data.filter(function(d){ return d.startDate >= Date(); });
-    });
   }
 })();
 
