@@ -11,10 +11,7 @@
     <form name="applicationForm" class="form-horizontal" role="form" ng-submit="vm.save(applicationForm.$valid)" novalidate>
 
       <div class="col-md-5">
-
-
         <h2>Personuppgifter</h2>
-
         <div class="form-group" ng-repeat="q in personQuestions">
           <label class="control-label col-sm-3" for="{{ q.name }}">{{ q.question }}:</label>
           <div class="col-sm-9">
@@ -24,10 +21,8 @@
             <p class="help-block error-text" ng-message="required">{{ q.question }} är obligatorisk.</p>
           </div>
         </div>
-
-
-
       </div>
+
       <div class="col-md-5 col-md-offset-1">
         <!-- TODO: Add university-points, assignments, earlierScholorships and interruption  --!>
         <div class="form-group">
@@ -45,6 +40,32 @@
           </div>
           <button ng-click="addSemester(user.universitypoints.semesters)" class="btn btn-warning">Lägg till äldre termin</button>
         </div>
+        </div>
+
+      <div class="col-md-5 col-md-offset-1">
+        <div class="form-group">
+          <h2>Uppdrag på nationen</h2>
+          <div ng-repeat="a in user.assignments">
+            <div class="col-sm-9">
+              <input name="{{ a.semester }}" type="string" ng-model="a.semester" id="{{ a.semester }}semester" class="form-control" placeholder="{{ a.semester }}" required>
+            </div>
+
+            <div class="col-sm-9">
+              <input name="{{ a.type }}" type="string" ng-model="a.type" id="{{ a.type }}type" class="form-control" placeholder="{{ a.type }}" required>
+            </div>
+
+            <div class="col-sm-9">
+              <input name="{{ a.name }}" type="string" ng-model="a.name" id="{{ a.name }}name" class="form-control" placeholder="{{ a.name }}" required>
+            </div>
+
+            <div class="col-sm-9">
+              <input name="{{ a.description }}" type="string" ng-model="a.description" id="{{ a.semester }}description" class="form-control" placeholder="{{ a.description }}" required>
+            </div>
+
+          </div>
+          <button class="btn btn-warning">Lägg till uppdrag</button>
+        </div>
+      </div>
 
 
 
