@@ -19,6 +19,7 @@
     vm.save = save;
     
     // Det Nille lagt dit, härifrån...
+    vm.isAdmin = vm.authentication.user.roles && vm.authentication.user.roles.indexOf('admin') >= 0;
   
     // To enable using ng-model date to model.  
     $scope.startString = dateFilter(vm.scholorship.startDate, 'yyyy-MM-dd');
