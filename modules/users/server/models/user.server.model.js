@@ -119,10 +119,10 @@ var UserSchema = new Schema({
     semester: String, 
     money: Number
   }],
-  interruption: {
+  interruption: [{
     when: String,
     why: String
-  },
+  }],
   username: {
     type: String,
     unique: 'Username already exists',
