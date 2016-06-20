@@ -10,7 +10,7 @@
   function ScholorshipsListController(ScholorshipsService) {
     var vm = this;
 
-    vm.scholorships = ScholorshipsService.query( {}, function (data){
+    vm.scholorships = ScholorshipsService.query({}, function (data){
       if(data){
         vm.activeScholorships = data.filter(function(d){
           var now = Date();
