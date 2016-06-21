@@ -24,6 +24,13 @@
     // To enable using ng-model date to model.  
     $scope.startString = dateFilter(vm.scholorship.startDate, 'yyyy-MM-dd');
     $scope.endString = dateFilter(vm.scholorship.endDate, 'yyyy-MM-dd');
+    
+    var s = vm.scholorship.startDate;
+    var e = vm.scholorship.endDate;
+    var now = Date();
+    $scope.isActive = s <= now && e >= now;
+    $scope.isOld = s >= now && e >= now;
+    $scope.isUpcoming = s <= now && e <= now;
 
     $scope.$watch('startString', function (dateString) {
       vm.scholorship.startDate = new Date(dateString);

@@ -8,7 +8,15 @@
     <div ng-bind-html="htmlDescription"></div>
     
     <button onclick="window.history.back();" class="btn btn-default ">Tillbaka</button>
-    <a class="btn btn-primary"
+    <button data-ng-show="isUpcoming" class="btn btn-primary" disabled="disabled">
+      <i class="glyphicon glyphicon-plus-sign"></i>
+      Ansökningstiden börjar {{ startString }}
+    </button>
+    <button data-ng-show="isOld" class="btn btn-primary" disabled="disabled">
+      <i class="glyphicon glyphicon-plus-sign"></i>
+      Ansökningstiden har passerat
+    </button>
+    <a data-ng-show="isActive" class="btn btn-primary"
        data-ui-sref="applications.create({ scholorshipId: vm.scholorship._id, scholorshipName: vm.scholorship.name})">
       <i class="glyphicon glyphicon-plus-sign"></i>
       Ansök nu
