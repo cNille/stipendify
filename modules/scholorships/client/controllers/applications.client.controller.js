@@ -135,13 +135,13 @@
     $scope.addAssignment = function (assignments){
       // TODO: Implement
       assignments.push({ 'type' : '', 'name' : '', 'semester' : '', 'description' : '' });
-    }
+    };
     $scope.earlierScholorships = function (earlierScholorships){
       // TODO: Implement
-    }
+    };
     $scope.interruption = function (interruption){
       // TODO: Implement
-    }
+    };
 
     $scope.addSemester = function (semesters){
       SemesterService.addSemester(semesters, false);
