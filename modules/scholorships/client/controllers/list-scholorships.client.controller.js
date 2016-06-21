@@ -5,12 +5,20 @@
     .module('scholorships')
     .controller('ScholorshipsListController', ScholorshipsListController);
 
-  ScholorshipsListController.$inject = ['ScholorshipsService'];
+  ScholorshipsListController.$inject = ['ScholorshipsService', 'dateFilter', '$scope'];
 
-  function ScholorshipsListController(ScholorshipsService) {
+  function ScholorshipsListController(ScholorshipsService, dateFilter, $scope) {
     var vm = this;
 
-    vm.scholorships = ScholorshipsService.query({}, function (data){
+    $scope.dateFilter = function (d) {
+      return dateFilter(d, 'yyyy-MM-dd');
+    };
+
+    // To enable using ng-model date to model.  
+    //$scope.startString = dateFilter(vm.scholorship.startDate, 'yyyy-MM-dd');
+    //$scope.endString = dateFilter(vm.scholorship.endDate, 'yyyy-MM-dd');
+    
+    vm.lists = ScholorshipsService.query({}, function (data){
       if(data){
         vm.activeScholorships = data.filter(function(d){
           var now = Date();
@@ -24,6 +32,16 @@
           var now = Date();
           return d.startDate < now;
         });
+        vm.lists = [ {
+          list: vm.activeScholorships,
+          title: 'Aktiva stipendier',
+          }, {
+            list: vm.oldScholorships,
+            title: 'Gamla stipendier',
+          }, {
+          list: vm.upcomingScholorships,
+          title: 'Kommande stipendier',
+        } ];
       }
     });
   }
