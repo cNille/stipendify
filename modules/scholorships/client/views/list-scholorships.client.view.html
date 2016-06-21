@@ -2,6 +2,7 @@
   <div class="page-header">
     <h1>Scholorships</h1>
   </div>
+    <h4>Activa stipendier: {{ vm.activeScholorships.length }}</h4>
   <div class="list-group" data-ng-show="vm.activeScholorships.length > 0">
     <h4>Activa stipendier</h4>
     <a data-ng-repeat="scholorship in vm.activeScholorships"
@@ -17,6 +18,7 @@
       <h4 class="list-group-item-heading" data-ng-bind="scholorship.name"></h4>
     </a>
   </div>
+    <h4>Kommande stipendier: {{ vm.upcomingScholorships.length }}</h4>
   <div class="list-group" data-ng-show="vm.upcomingScholorships.length > 0">
     <h4>Kommande stipendier</h4>
     <a data-ng-repeat="scholorship in vm.upcomingScholorships"
@@ -32,6 +34,7 @@
       <h4 class="list-group-item-heading" data-ng-bind="scholorship.name"></h4>
     </a>
   </div>
+    <h4>Gamla stipendier: {{ vm.oldScholorships.length }}</h4>
   <div class="list-group" data-ng-show="vm.oldScholorships.length > 0">
     <h4>Gamla stipendier</h4>
     <a data-ng-repeat="scholorship in vm.oldScholorships"
