@@ -32,16 +32,10 @@
           var now = Date();
           return d.startDate < now;
         });
-        vm.lists = [ {
-          list: vm.activeScholorships,
-          title: 'Aktiva stipendier',
-          }, {
-            list: vm.oldScholorships,
-            title: 'Gamla stipendier',
-          }, {
-          list: vm.upcomingScholorships,
-          title: 'Kommande stipendier',
-        } ];
+        vm.lists = [ { list: vm.activeScholorships, title: 'Aktiva stipendier' }, 
+          { list: vm.oldScholorships, title: 'Gamla stipendier' }, 
+          { list: vm.upcomingScholorships, title: 'Kommande stipendier' } 
+        ];
       }
     });
   }
