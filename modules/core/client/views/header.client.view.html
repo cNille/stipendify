@@ -37,20 +37,20 @@
         </a>
         <ul class="dropdown-menu" role="menu">
           <li ui-sref-active="active">
-            <a ui-sref="settings.profile">Edit Profile</a>
+            <a ui-sref="settings.profile">Ändra min profil</a>
           </li>
           <li ui-sref-active="active">
-            <a ui-sref="settings.picture">Change Profile Picture</a>
+            <a ui-sref="settings.picture">Ändra profilbild</a>
           </li>
           <li ui-sref-active="active" ng-show="authentication.user.provider === 'local'">
-            <a ui-sref="settings.password">Change Password</a>
+            <a ui-sref="settings.password">Ändra lösenord</a>
           </li>
-          <li ui-sref-active="active">
-            <a ui-sref="settings.accounts">Manage Social Accounts</a>
+          <li ui-sref-active="active" data-ng-show="false">
+            <a ui-sref="settings.accounts">Hantera sociala konton</a>
           </li>
           <li class="divider"></li>
           <li>
-            <a href="/api/auth/signout" target="_self">Signout</a>
+            <a href="/api/auth/signout" target="_self">Logga ut</a>
           </li>
         </ul>
       </li>

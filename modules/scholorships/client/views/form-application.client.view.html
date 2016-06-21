@@ -11,10 +11,7 @@
     <form name="applicationForm" class="form-horizontal" role="form" ng-submit="vm.save(applicationForm.$valid)" novalidate>
 
       <div class="col-md-5">
-
-
         <h2>Personuppgifter</h2>
-
         <div class="form-group" ng-repeat="q in personQuestions">
           <label class="control-label col-sm-3" for="{{ q.name }}">{{ q.question }}:</label>
           <div class="col-sm-9">
@@ -24,10 +21,8 @@
             <p class="help-block error-text" ng-message="required">{{ q.question }} är obligatorisk.</p>
           </div>
         </div>
-
-
-
       </div>
+
       <div class="col-md-5 col-md-offset-1">
         <!-- TODO: Add university-points, assignments, earlierScholorships and interruption  --!>
         <div class="form-group">
@@ -45,6 +40,58 @@
           </div>
           <button ng-click="addSemester(user.universitypoints.semesters)" class="btn btn-warning">Lägg till äldre termin</button>
         </div>
+        </div>
+
+      <div class="col-md-5 col-md-offset-1">
+        <div class="form-group">
+          <h2>Uppdrag på nationen</h2>
+          <div ng-repeat="a in user.assignments">
+            <div class="col-sm-9">
+              <table class="table table-bordered table-hover table-condensed">
+                <tr style="font-weight: bold">
+                  <td style="width:20%">Termin</td>
+                  <td style="width:20%">Typ</td>
+                  <td style="width:20%">Post</td>
+                  <td style="width:15%">Beskrivning</td>
+                  <td style="width:25%"></td>
+                </tr>
+                <tr ng-repeat="a in user.assignments">
+                  <td>
+                    <!-- editable personnumber (text with validation) -->
+                    <span editable-text="a.semester" e-name="semester" e-form="rowform" e-required>
+                      {{ a.semester }}
+                    </span>
+                  </td>
+                  <td>
+                    <!-- editable name (text with validation) -->
+                    <span editable-text="a.type" e-name="type" e-form="rowform" e-required>
+                      {{ a.type }}
+                    </span>
+                  </td>
+                  <td>
+                    <!-- editable universitypoints (text with validation) -->
+                    <span editable-text="a.name" e-name="name" e-form="rowform" e-required>
+                      {{ a.name }}
+                    </span>
+                  </td>
+                  <td>
+                    <!-- editable bank (text with validation) -->
+                    <span editable-text="a.description" e-name="description" e-form="rowform" e-required>
+                      {{ a.description }}
+                    </span>
+                  </td>
+                  <td style="white-space: nowrap">
+                    <div class="buttons" ng-show="!rowform.$visible">
+                      <a data-ui-sref="applications.view({ applicationId: a._id })" class="btn btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a>
+                      <button class="btn btn-danger" ng-click="removeApplication($index)"><i class="glyphicon glyphicon-trash"></i></button>
+                    </div>  
+                  </td>
+                </tr>
+              </table>
+          </div>
+          <button ng-click="addAssignment(user.assignments)" class="btn btn-warning">Lägg till uppdrag</button>
+        </div>
+      </div>
 
 
 

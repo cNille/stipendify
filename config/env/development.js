@@ -2,9 +2,9 @@
 
 var defaultEnvConfig = require('./default');
 
+//uri: 'mongodb://nille:pille@ds047305.mlab.com:47305/shapeapp',
 module.exports = {
   db: {
-    //uri: 'mongodb://nille:pille@ds047305.mlab.com:47305/shapeapp',
     uri: 'localhost:27017/local',
     options: {
       user: '',

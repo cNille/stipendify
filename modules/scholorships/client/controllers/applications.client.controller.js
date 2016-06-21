@@ -39,9 +39,9 @@
         placeholder : '07XX-XX XX XX', 
         variable : $scope.user.telephone 
       }, { 
-        name : 'streetaddress', 
+        name : 'street', 
         question : 'Gatuadress', 
-        variable : $scope.user.streetaddress 
+        variable : $scope.user.street 
       }, { 
         name : 'zipcode', 
         question : 'Post nummer', 
@@ -72,7 +72,7 @@
     $scope.updateModels = function() {
       $scope.user.personNumber = $scope.personQuestions[0].variable;
       $scope.user.telephone = $scope.personQuestions[1].variable;
-      $scope.user.streetaddress = $scope.personQuestions[2].variable;
+      $scope.user.street = $scope.personQuestions[2].variable;
       $scope.user.zipCode = $scope.personQuestions[3].variable;
       $scope.user.city = $scope.personQuestions[4].variable;
       $scope.user.highschool = $scope.personQuestions[5].variable;
@@ -117,7 +117,7 @@
         'displayName': $scope.user.displayName,
         'personNumber': $scope.user.personNumber,
         'telephone': $scope.user.telephone,
-        'streetaddress': $scope.user.streetaddress,
+        'street': $scope.user.streestreet,
         'zipCode': $scope.user.zipCode,
         'city': $scope.user.city,
         'highschool': $scope.user.highschool,
@@ -130,6 +130,17 @@
 
       // Save application
       vm.application.$save($scope.successCallback, $scope.errorCallback);
+    };
+
+    $scope.addAssignment = function (assignments){
+      // TODO: Implement
+      assignments.push({ 'type' : '', 'name' : '', 'semester' : '', 'description' : '' });
+    };
+    $scope.earlierScholorships = function (earlierScholorships){
+      // TODO: Implement
+    };
+    $scope.interruption = function (interruption){
+      // TODO: Implement
     };
 
     $scope.addSemester = function (semesters){

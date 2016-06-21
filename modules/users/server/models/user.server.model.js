@@ -63,7 +63,7 @@ var UserSchema = new Schema({
     trim: true,
     default: '',
   },
-  streetaddress: {
+  street: {
     type: String,
     trim: true,
     default: '',
@@ -119,10 +119,10 @@ var UserSchema = new Schema({
     semester: String, 
     money: Number
   }],
-  interruption: {
+  interruption: [{
     when: String,
     why: String
-  },
+  }],
   username: {
     type: String,
     unique: 'Username already exists',

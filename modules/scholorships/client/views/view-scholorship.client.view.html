@@ -14,12 +14,14 @@
       Ansök nu
     </a>
     <hr />
-    <h4>För admin</h4>
-    <a class="btn btn-primary"
-       data-ui-sref="applications.scholorlist({ scholorshipId: vm.scholorship._id})">
-      <i class="glyphicon glyphicon-th-list"></i>
-       Se alla inkomna ansökningar
-    </a>
+    <div data-ng-show="vm.isAdmin">
+      <h4>För admin</h4>
+      <a class="btn btn-primary"
+         data-ui-sref="applications.scholorlist({ scholorshipId: vm.scholorship._id})">
+        <i class="glyphicon glyphicon-th-list"></i>
+         Se alla inkomna ansökningar
+      </a>
+    </div>
   </div>
   <div class="pull-right"
        data-ng-show="vm.scholorship.isCurrentUserOwner">

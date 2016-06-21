@@ -2,8 +2,42 @@
   <div class="page-header">
     <h1>Scholorships</h1>
   </div>
-  <div class="list-group">
-    <a data-ng-repeat="scholorship in vm.scholorships"
+    <h4>Activa stipendier: {{ vm.activeScholorships.length }}</h4>
+  <div class="list-group" data-ng-show="vm.activeScholorships.length > 0">
+    <h4>Activa stipendier</h4>
+    <a data-ng-repeat="scholorship in vm.activeScholorships"
+       data-ui-sref="scholorships.view({ scholorshipId: scholorship._id })"
+       class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span data-ng-bind="scholorship.created | date:'mediumDate'"></span>
+        by
+        <span data-ng-if="scholorship.user" data-ng-bind="scholorship.user.displayName"></span>
+        <span data-ng-if="!scholorship.user">Deleted User</span>
+      </small>
+      <h4 class="list-group-item-heading" data-ng-bind="scholorship.name"></h4>
+    </a>
+  </div>
+    <h4>Kommande stipendier: {{ vm.upcomingScholorships.length }}</h4>
+  <div class="list-group" data-ng-show="vm.upcomingScholorships.length > 0">
+    <h4>Kommande stipendier</h4>
+    <a data-ng-repeat="scholorship in vm.upcomingScholorships"
+       data-ui-sref="scholorships.view({ scholorshipId: scholorship._id })"
+       class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span data-ng-bind="scholorship.created | date:'mediumDate'"></span>
+        by
+        <span data-ng-if="scholorship.user" data-ng-bind="scholorship.user.displayName"></span>
+        <span data-ng-if="!scholorship.user">Deleted User</span>
+      </small>
+      <h4 class="list-group-item-heading" data-ng-bind="scholorship.name"></h4>
+    </a>
+  </div>
+    <h4>Gamla stipendier: {{ vm.oldScholorships.length }}</h4>
+  <div class="list-group" data-ng-show="vm.oldScholorships.length > 0">
+    <h4>Gamla stipendier</h4>
+    <a data-ng-repeat="scholorship in vm.oldScholorships"
        data-ui-sref="scholorships.view({ scholorshipId: scholorship._id })"
        class="list-group-item">
       <small class="list-group-item-text">

@@ -797,9 +797,9 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
         placeholder : '07XX-XX XX XX', 
         variable : $scope.user.telephone 
       }, { 
-        name : 'streetaddress', 
+        name : 'street', 
         question : 'Gatuadress', 
-        variable : $scope.user.streetaddress 
+        variable : $scope.user.street 
       }, { 
         name : 'zipcode', 
         question : 'Post nummer', 
@@ -830,7 +830,7 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
     $scope.updateModels = function() {
       $scope.user.personNumber = $scope.personQuestions[0].variable;
       $scope.user.telephone = $scope.personQuestions[1].variable;
-      $scope.user.streetaddress = $scope.personQuestions[2].variable;
+      $scope.user.street = $scope.personQuestions[2].variable;
       $scope.user.zipCode = $scope.personQuestions[3].variable;
       $scope.user.city = $scope.personQuestions[4].variable;
       $scope.user.highschool = $scope.personQuestions[5].variable;
@@ -875,7 +875,7 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
         'displayName': $scope.user.displayName,
         'personNumber': $scope.user.personNumber,
         'telephone': $scope.user.telephone,
-        'streetaddress': $scope.user.streetaddress,
+        'street': $scope.user.streestreet,
         'zipCode': $scope.user.zipCode,
         'city': $scope.user.city,
         'highschool': $scope.user.highschool,
@@ -888,6 +888,17 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
 
       // Save application
       vm.application.$save($scope.successCallback, $scope.errorCallback);
+    };
+
+    $scope.addAssignment = function (assignments){
+      // TODO: Implement
+      assignments.push({ 'type' : '', 'name' : '', 'semester' : '', 'description' : '' });
+    };
+    $scope.earlierScholorships = function (earlierScholorships){
+      // TODO: Implement
+    };
+    $scope.interruption = function (interruption){
+      // TODO: Implement
     };
 
     $scope.addSemester = function (semesters){
@@ -1007,7 +1018,22 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
   function ScholorshipsListController(ScholorshipsService) {
     var vm = this;
 
-    vm.scholorships = ScholorshipsService.query();
+    vm.scholorships = ScholorshipsService.query({}, function (data){
+      if(data){
+        vm.activeScholorships = data.filter(function(d){
+          var now = Date();
+          return d.startDate <= now && d.endDate >= now;
+        });
+        vm.oldScholorships = data.filter(function(d){
+          var now = Date();
+          return d.startDate >= now && d.endDate > now;
+        });
+        vm.upcomingScholorships = data.filter(function(d){
+          var now = Date();
+          return d.startDate < now;
+        });
+      }
+    });
   }
 })();
 
@@ -1032,6 +1058,7 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
     vm.save = save;
     
     // Det Nille lagt dit, härifrån...
+    vm.isAdmin = vm.authentication.user.roles && vm.authentication.user.roles.indexOf('admin') >= 0;
   
     // To enable using ng-model date to model.  
     $scope.startString = dateFilter(vm.scholorship.startDate, 'yyyy-MM-dd');
