@@ -26,66 +26,19 @@
     vm.remove = remove;
     vm.save = save;
 
-    // Create question Array
-    $scope.personQuestions = [ 
-      { 
-        name : 'personnummer', 
-        question : 'Personnr', 
-        placeholder : 'XXXXXXX-XXXX', 
-        variable : $scope.user.personNumber 
-      }, { 
-        name : 'telephone', 
-        question : 'Telefon', 
-        placeholder : '07XX-XX XX XX', 
-        variable : $scope.user.telephone 
-      }, { 
-        name : 'street', 
-        question : 'Gatuadress', 
-        variable : $scope.user.street 
-      }, { 
-        name : 'zipcode', 
-        question : 'Post nummer', 
-        variable : $scope.user.zipCode 
-      }, { 
-        name : 'city', 
-        question : 'city', 
-        variable : $scope.user.city 
-      }, { 
-        name : 'highshool', 
-        question : 'Gymnasium och ort', 
-        variable : $scope.user.highschool 
-      }, { 
-        name : 'bank', 
-        question : 'Bank', 
-        variable : $scope.user.bank 
-      }, { 
-        name : 'bankaccount', 
-        question : 'Bankkonto', 
-        variable : $scope.user.bankaccount 
-      }, { 
-        name : 'union', 
-        question : 'Kår', 
-        variable : $scope.user.union 
-      },
-    ];
-  
-    $scope.updateModels = function() {
-      $scope.user.personNumber = $scope.personQuestions[0].variable;
-      $scope.user.telephone = $scope.personQuestions[1].variable;
-      $scope.user.street = $scope.personQuestions[2].variable;
-      $scope.user.zipCode = $scope.personQuestions[3].variable;
-      $scope.user.city = $scope.personQuestions[4].variable;
-      $scope.user.highschool = $scope.personQuestions[5].variable;
-      $scope.user.bank = $scope.personQuestions[6].variable;
-      $scope.user.bankaccount = $scope.personQuestions[7].variable;
-      $scope.user.union = $scope.personQuestions[8].variable;
-    };
 
-    // Update a user profile
+    // Save a user to db
     $scope.updateUserProfile = function () {
       $scope.success = $scope.error = null;
 
+      // Remove attributes that arent needed in db
+      $scope.user.assignments.forEach(function(v){ delete v.edit;});
+      $scope.user.earlierScholorships.forEach(function(v){ delete v.edit; });
+      $scope.user.interruption.forEach(function(v){ delete v.edit; });
       var myUser = new Users($scope.user);
+
+      // When debugging
+      console.log(myUser);
       myUser.$update(function (response) {
         // Update success, remove error-messages.
         $scope.$broadcast('show-errors-reset', 'applicationForm');
@@ -102,6 +55,7 @@
       });
     };
 
+    // Save application to db
     $scope.updateApplication = function() {
       // Add userdata to application
       vm.application.user = vm.authentication.user._id;
@@ -112,6 +66,11 @@
       $scope.user.universitypoints.semesters = $scope.user.universitypoints.semesters.filter(function (semester) {
         return semester.points !== 0;
       });
+  
+      // Remove attributes that arent needed in db
+      $scope.user.assignments.forEach(function(v){ delete v.edit; });
+      $scope.user.earlierScholorships.forEach(function(v){ delete v.edit; });
+      $scope.user.interruption.forEach(function(v){ delete v.edit; });
 
       vm.application.data = {
         'displayName': $scope.user.displayName,
@@ -126,27 +85,75 @@
         'union': $scope.user.union,
         'scholorshipName': vm.scholorshipName,
         'universitypoints': $scope.user.universitypoints,
+        'earlierScholorships': $scope.user.earlierScholorships,
+        'interruption': $scope.user.interruption,
       };
 
+      // When debugging
+      console.log(vm.application);
       // Save application
       vm.application.$save($scope.successCallback, $scope.errorCallback);
     };
 
+
+    // Add assignment
     $scope.addAssignment = function (assignments){
-      // TODO: Implement
-      assignments.push({ 'type' : '', 'name' : '', 'semester' : '', 'description' : '' });
+      assignments.push({ 'assignmenttype' : '', 'name' : '', 'semester' : '', 'edit' : true });
     };
-    $scope.earlierScholorships = function (earlierScholorships){
-      // TODO: Implement
+    // Add earlierScholorship
+    $scope.addEarlierScholorship = function (earlierScholorships){
+      earlierScholorships.push({ 'name' : '', 'semester' : '', 'money' : 0, 'edit' : true });
     };
-    $scope.interruption = function (interruption){
-      // TODO: Implement
+    // Add Interruption
+    $scope.addInterruption = function (interruptions){
+      interruptions.push({ 'when' : '', 'why' : '', 'edit' : true });
     };
 
+    // Save assignment
+    $scope.saveAssignment = function (index, valid) {
+      if(valid){ 
+        $scope.user.assignments[index].edit = false;
+        $scope.assignmenterror = '';
+      } else {
+        $scope.assignmenterror = 'Vänligen fyll i alla kolumner.';
+      }
+    };
+    // Save earlierScholorship
+    $scope.saveEarly = function (index, valid) {
+      if(valid){ 
+        $scope.user.earlierScholorships[index].edit = false;
+        $scope.earlyScholorshiperror = '';
+      } else {
+        $scope.earlyScholorshiperror = 'Vänligen fyll i alla kolumner.';
+      }
+    };
+    // Save interruption
+    $scope.saveInterruption = function (index, valid) {
+      if(valid){ 
+        $scope.user.interruption[index].edit = false;
+        $scope.interruptionerror = '';
+      } else {
+        $scope.interruptionerror = 'Vänligen fyll i alla kolumner.';
+      }
+    };
+    // Delete assignment
+    $scope.deleteAssignment = function($index){
+      $scope.user.assignments.splice($index,1);
+    };
+    // Delete earlierScholorship
+    $scope.deleteEarly = function($index){
+      $scope.user.earlierScholorships.splice($index,1);
+    };
+    // Delete interruption
+    $scope.deleteInterruption = function($index){
+      $scope.user.interruption.splice($index,1);
+    };
+
+    // Add semester
     $scope.addSemester = function (semesters){
       SemesterService.addSemester(semesters, false);
     };
-    
+    // Fill semesters array
     function fillSemesterArray(semesters){
       var thisSemester = SemesterService.getThisSemesterName();
       while (semesters.length > 0 && semesters[0].name !== thisSemester){
@@ -176,7 +183,7 @@
     // Save Application
     function save(isValid) {
       if (!isValid) {
-        vm.error = 'Du har missat att fylla i alla obligatoriska fält.';
+        vm.error = 'Du skall fylla i alla fält.';
         $scope.$broadcast('show-errors-check-validity', 'applicationForm');
         return false;
       }
@@ -202,5 +209,53 @@
         vm.error = res.data.message;
       };
     }
+
+
+    // Create question Array
+    $scope.personQuestions = [ 
+      { name : 'personnummer', 
+        question : 'Personnr', 
+        placeholder : 'XXXXXXX-XXXX', 
+        variable : $scope.user.personNumber 
+      }, { name : 'telephone', 
+        question : 'Telefon', 
+        placeholder : '07XX-XX XX XX', 
+        variable : $scope.user.telephone 
+      }, { name : 'street', 
+        question : 'Gatuadress', 
+        variable : $scope.user.street 
+      }, { name : 'zipcode', 
+        question : 'Post nummer', 
+        variable : $scope.user.zipCode 
+      }, { name : 'city', 
+        question : 'city', 
+        variable : $scope.user.city 
+      }, { name : 'highshool', 
+        question : 'Gymnasium och ort', 
+        variable : $scope.user.highschool 
+      }, { name : 'bank', 
+        question : 'Bank', 
+        variable : $scope.user.bank 
+      }, { name : 'bankaccount', 
+        question : 'Bankkonto', 
+        variable : $scope.user.bankaccount 
+      }, { name : 'union', 
+        question : 'Kår', 
+        variable : $scope.user.union 
+      },
+    ];
+  
+    $scope.updateModels = function() {
+      $scope.user.personNumber = $scope.personQuestions[0].variable;
+      $scope.user.telephone = $scope.personQuestions[1].variable;
+      $scope.user.street = $scope.personQuestions[2].variable;
+      $scope.user.zipCode = $scope.personQuestions[3].variable;
+      $scope.user.city = $scope.personQuestions[4].variable;
+      $scope.user.highschool = $scope.personQuestions[5].variable;
+      $scope.user.bank = $scope.personQuestions[6].variable;
+      $scope.user.bankaccount = $scope.personQuestions[7].variable;
+      $scope.user.union = $scope.personQuestions[8].variable;
+    };
+
   }
 })();

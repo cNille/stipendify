@@ -109,10 +109,9 @@ var UserSchema = new Schema({
     }]
   },
   assignments: [{
-    type: String, 
-    name: String, 
-    semester: String, 
-    description: String
+    'assignmenttype': String, 
+    'name': String, 
+    'semester': String, 
   }],
   earlierScholorships: [{
     name: String, 
