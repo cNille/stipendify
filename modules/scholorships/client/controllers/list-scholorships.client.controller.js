@@ -21,20 +21,26 @@
     vm.lists = ScholorshipsService.query({}, function (data){
       if(data){
         vm.activeScholorships = data.filter(function(d){
-          var now = Date();
-          return d.startDate <= now && d.endDate >= now;
+          var now = $scope.dateFilter(new Date());
+          var start = $scope.dateFilter(d.startDate);
+          var end = $scope.dateFilter(d.endDate);
+          return start <= now && end >= now;
         });
         vm.oldScholorships = data.filter(function(d){
-          var now = Date();
-          return d.startDate >= now && d.endDate > now;
+          var now = $scope.dateFilter(new Date());
+          var start = $scope.dateFilter(d.startDate);
+          var end = $scope.dateFilter(d.endDate);
+          return start >= now && end > now;
         });
         vm.upcomingScholorships = data.filter(function(d){
-          var now = Date();
-          return d.startDate < now;
+          var now = $scope.dateFilter(new Date());
+          var start = $scope.dateFilter(d.startDate);
+          var end = $scope.dateFilter(d.endDate);
+          return start < now;
         });
         vm.lists = [ { list: vm.activeScholorships, title: 'Aktiva stipendier' }, 
+          { list: vm.upcomingScholorships, title: 'Kommande stipendier' },
           { list: vm.oldScholorships, title: 'Gamla stipendier' }, 
-          { list: vm.upcomingScholorships, title: 'Kommande stipendier' } 
         ];
       }
     });
