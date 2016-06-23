@@ -55,7 +55,7 @@
 
     // Save Scholorship
     function save(isValid) {
-      if (!isValid) {
+      if (!(isValid && dateFilter(vm.scholorship.startDate, 'yyyy-MM-dd') < dateFilter(vm.scholorship.endDate, 'yyyy-MM-dd'))) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.scholorshipForm');
         return false;
       }
