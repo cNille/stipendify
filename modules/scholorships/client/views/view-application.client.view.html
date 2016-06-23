@@ -34,7 +34,7 @@
     <label class="col-sm-3 text-right">Totalt:</label>
     <div class="col-sm-9" ng-bind="vm.application.data.universitypoints.total"></div>
   </div>
-  <div class="row" ng-repeat="semester in user.universitypoints.semesters">
+  <div class="row" ng-repeat="semester in vm.application.data.universitypoints.semesters">
     <label class="col-sm-3 text-right" >{{ semester.name }}:</label>
     <div class="col-sm-9">
       <span>{{ semester.points}}</span>
@@ -46,15 +46,11 @@
     <table class="table table-bordered table-hover table-condensed">
       <tr style="font-weight: bold">
         <td style="width:20%">Termin</td>
-        <td style="width:30%">Typ</td>
         <td style="width:30%">Post</td>
       </tr>
-      <tr ng-repeat="a in user.assignments track by $index">
+      <tr ng-repeat="a in vm.application.data.assignments track by $index">
         <td>
             <span>{{ a.semester }}</span>
-        </td>
-        <td>
-            <span>{{ a.assignmenttype }}</span>
         </td>
         <td>
             <span>{{ a.name }}</span>

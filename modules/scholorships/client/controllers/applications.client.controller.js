@@ -86,6 +86,7 @@
         'union': $scope.user.union,
         'scholorshipName': vm.scholorshipName,
         'universitypoints': $scope.user.universitypoints,
+        'assignments': $scope.user.assignments,
         'earlierScholorships': $scope.user.earlierScholorships,
         'interruption': $scope.user.interruption,
       };

@@ -64,7 +64,6 @@
           <table class="table table-bordered table-hover table-condensed">
             <tr style="font-weight: bold">
               <td style="width:20%">Termin</td>
-              <td style="width:30%">Typ</td>
               <td style="width:30%">Post</td>
               <td style="width:5%"></td>
             </tr>
@@ -75,14 +74,6 @@
                 </div>
                 <div ng-show="user.assignments[$index].edit">
                   <input type="string" ng-model="a.semester" id="{{ $index }}-sem-ass" placeholder="Ex:HT16..." class="form-control" required>
-                </div>
-              </td>
-              <td>
-                <div ng-show="!user.assignments[$index].edit">
-                  <span>{{ a.assignmenttype }}</span>
-                </div>
-                <div ng-show="user.assignments[$index].edit">
-                  <input name="{{ a.assignmenttype }}" type="string" ng-model="a.assignmenttype" id="{{ $index }}-type-ass" class="form-control" required>
                 </div>
               </td>
               <td>

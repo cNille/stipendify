@@ -45,7 +45,7 @@ var ApplicationSchema = new Schema({
     'union': String,
     'scholorshipName': String,
     'universitypoints': { 'total' : Number, 'semesters' : [ { 'name': String, 'points' : Number } ] },
-    'assignments': [ { 'type': String, 'name' : String, 'semester' : String, 'description' : String } ],
+    'assignments': [ { 'name' : String, 'semester' : String } ],
     'earlierScholorships': [ { 'name' : String, 'semester' : String, 'money' : Number } ],
     'interruption': [ { 'when' : String, 'why' : String } ]
   },
