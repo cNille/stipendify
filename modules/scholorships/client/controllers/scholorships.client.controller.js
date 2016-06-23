@@ -57,6 +57,7 @@
     function save(isValid) {
       if (!(isValid && dateFilter(vm.scholorship.startDate, 'yyyy-MM-dd') < dateFilter(vm.scholorship.endDate, 'yyyy-MM-dd'))) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.scholorshipForm');
+        vm.error = "Ej giltig input. P.S tänk på att startdatum inte får ske samma dag eller senare än slutdatumet.";
         return false;
       }
 

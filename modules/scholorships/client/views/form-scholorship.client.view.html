@@ -6,24 +6,24 @@
     <form name="vm.form.scholorshipForm" class="form-horizontal" ng-submit="vm.save(vm.form.scholorshipForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
-          <label class="control-label" for="name">Namn</label>
+          <label class="control-label" for="name">Namn*</label>
           <input name="name" type="text" ng-model="vm.scholorship.name" id="name" class="form-control" placeholder="Name" required>
           <div ng-messages="vm.form.scholorshipForm.name.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Stipendiumnamn är obligatorisk.</p>
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label" for="description">Utlysningstext</label>
-          <textarea name="description" ng-model="vm.scholorship.description" id="description" class="form-control"></textarea>
+          <label class="control-label" for="description">Utlysningstext*</label>
+          <textarea name="description" ng-model="vm.scholorship.description" id="description" class="form-control" required></textarea>
         </div>
         <div class="form-group">
-          <label for="startdate">Startdatum</label>
+          <label for="startdate">Startdatum*</label>
             <input type="datetime" class="form-control" id="startdate" name="startDate" ng-model="startString" placeholder="yyyy-MM-dd" />
            <span class="text-danger" ng-show="vm.form.scholorshipForm.startdate.$error.required">Obligatorisk!</span>
            <span class="text-danger" ng-show="vm.form.scholorshipForm.startdate.$error.date">Inte ett giltigt datum!</span>
         </div>
         <div class="form-group">
-          <label for="enddate">Slutdatum </label>
+          <label for="enddate">Slutdatum*</label>
           <input type="datetime" class="form-control" id="enddate" name="enddate" ng-model="endString" />
           <span class="text-danger" ng-show="vm.form.scholorshipForm.enddate.$error.required">Obligatorisk!</span>
           <span class="text-danger" ng-show="vm.form.scholorshipForm.enddate.$error.date">Inte ett giltigt datum!</span>
