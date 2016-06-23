@@ -1,16 +1,109 @@
 <section>
   <div class="page-header">
-    <h1 data-ng-bind="vm.application.data.name"></h1>
+  <h1>Ansökan</h1>
   </div>
-  <div class=".col-md-6 .col-md-offset-2">
-    <label>Antal terminer studerat:</label><div ng-bind="vm.application.semesterStudied"></div>
-    <label>Antal terminer som nationsmedlem:</label><div ng-bind="vm.application.semesterNation"></div>
-    <div ng-bind-html="htmlDescription"></div>
+  <div class="row">
+    <label class="col-sm-3 text-right">Ansökan-id:</label>
+    <div class="col-sm-9" ng-bind="vm.application._id"></div>
+  </div>
+  <div class="row">
+    <label class="col-sm-3 text-right">Namn:</label>
+    <div class="col-sm-9" ng-bind="vm.application.data.displayName"></div>
+  </div>
+  <div class="row">
+    <label class="col-sm-3 text-right">Sökt Stipendium:</label>
+    <div class="col-sm-8" ng-bind="vm.application.data.scholorshipName"></div>
+  </div>
+  <div class="row">
+    <label class="col-sm-3 text-right">Antal terminer studerat:</label>
+    <div class="col-sm-8" ng-bind="vm.application.semesterStudied"></div>
+  </div>
+  <div class="row">
+    <label class="col-sm-3 text-right">Antal terminer i nationen:</label>
+    <div class="col-sm-8" ng-bind="vm.application.semesterNation"></div>
+  </div>
+  <div class="row" ng-repeat="q in personQuestions">
+    <label class="col-sm-3 text-right">{{ q.question }}:</label>
+    <div class="col-sm-8" ng-bind="q.variable"></div>
+  </div>
 
-    <!-- TODO: Show all data -->
-    
-    
+
+
+  <h2>Högskolepoäng</h2>
+  <div class="row">
+    <label class="col-sm-3 text-right">Totalt:</label>
+    <div class="col-sm-9" ng-bind="vm.application.data.universitypoints.total"></div>
   </div>
+  <div class="row" ng-repeat="semester in user.universitypoints.semesters">
+    <label class="col-sm-3 text-right" >{{ semester.name }}:</label>
+    <div class="col-sm-9">
+      <span>{{ semester.points}}</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <h2>Uppdrag på nationen</h2>
+    <table class="table table-bordered table-hover table-condensed">
+      <tr style="font-weight: bold">
+        <td style="width:20%">Termin</td>
+        <td style="width:30%">Typ</td>
+        <td style="width:30%">Post</td>
+      </tr>
+      <tr ng-repeat="a in user.assignments track by $index">
+        <td>
+            <span>{{ a.semester }}</span>
+        </td>
+        <td>
+            <span>{{ a.assignmenttype }}</span>
+        </td>
+        <td>
+            <span>{{ a.name }}</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="row">
+    <h2>Tidigare erhållna stipendier</h2>
+    <table class="table table-bordered table-hover table-condensed">
+      <tr style="font-weight: bold">
+        <td style="width:20%">Termin</td>
+        <td style="width:20%">Namn</td>
+        <td style="width:20%">Summa</td>
+      </tr>
+      <tr ng-repeat="a in user.earlierScholorships track by $index">
+        <td>
+            <span>{{ a.semester }}</span>
+        </td>
+        <td>
+            <span>{{ a.name }}</span>
+        </td>
+        <td>
+            <span>{{ a.money }}</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="row">
+    <h2>Avbrott från studier</h2>
+    <table class="table table-bordered table-hover table-condensed">
+      <tr style="font-weight: bold">
+        <td style="width:20%">Period</td>
+        <td style="width:20%">Anledning</td>
+      </tr>
+      <tr ng-repeat="a in user.interruption track by $index">
+        <td>
+            <span>{{ a.why }}</span>
+        </td>
+        <td>
+            <span>{{ a.when }}</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+    
+    
   <div class="pull-right"
        data-ng-show="(vm.authentication.user.roles.indexOf('admin')+1)">
     <a class="btn btn-primary"
