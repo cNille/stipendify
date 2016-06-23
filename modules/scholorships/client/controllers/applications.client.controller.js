@@ -196,7 +196,7 @@
       }
 
       $scope.successCallback = function (res) {
-        var nextState = $scope.isEditing ? 'applications.list' : 'applications.submitted';
+        var nextState = $scope.isEditing ? 'applications.list' : 'applications.attachments';
         $state.go(nextState, {
           applicationId: res._id
         });

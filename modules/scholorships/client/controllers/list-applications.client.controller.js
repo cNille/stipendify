@@ -14,7 +14,7 @@
     vm.semesters = SemesterService.getLastFourSemesters({});
     $scope.applications = ApplicationsService.query({ scholorship : vm.scholorshipId }, function(data) {
       // TODO: Find better solution than to filter here.
-      $scope.applications = data.filter(function(d){ return d.scholorship === vm.scholorshipId; });
+      $scope.applications = data.filter(function(d){ return d.scholorship === vm.scholorshipId && d.complete; });
       $scope.scholorshipName = data[0].data.scholorshipName;
     });
 

@@ -7,7 +7,9 @@ var path = require('path'),
   mongoose = require('mongoose'),
   Application = mongoose.model('Application'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-  _ = require('lodash');
+  _ = require('lodash'),
+  config = require(path.resolve('./config/config')),
+  multer = require('multer');
 
 /**
  * Create a Application
@@ -120,4 +122,55 @@ exports.applicationByID = function(req, res, next, id) {
     req.application = application;
     next();
   });
+};
+
+/**
+ * Update attachment-pdf
+ */
+exports.addLadokAttachment = function (req, res) {
+  var application = req.application;
+  var message = null;
+
+  var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './public/uploads/ladok/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, application._id + '.pdf');
+    }
+  });
+
+  config.uploads.ladokUpload.storage = storage;
+
+  var upload = multer(config.uploads.ladokUpload).single('newLadokFile');
+  var ladokFileFilter = require(path.resolve('./config/lib/multer')).ladokFileFilter;
+  
+  // Filtering to upload only pdf's
+  upload.fileFilter = ladokFileFilter;
+
+  if (application) {
+    upload(req, res, function (uploadError) {
+      if(uploadError) {
+        return res.status(400).send({
+          message: 'Error occurred while uploading ladok-file'
+        });
+      } else {
+        application.complete = true;
+
+        application.save(function (saveError) {
+          if (saveError) {
+            return res.status(400).send({
+              message: errorHandler.getErrorMessage(saveError)
+            });
+          } else {
+            res.json(application);
+          }
+        });
+      }
+    });
+  } else {
+    res.status(400).send({
+      message: 'Application not sent.'
+    });
+  }
 };

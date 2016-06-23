@@ -38,6 +38,19 @@
           pageTitle: 'Applications List'
         }
       })
+      .state('applications.attachments', {
+        url: '/attachments/:applicationId/',
+        templateUrl: 'modules/scholorships/client/views/form-attachments.client.view.html',
+        controller: 'AttachmentsController',
+        controllerAs: 'vm',
+        resolve: {
+          applicationResolve: getApplication,
+        },
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle : 'Bilagor'
+        }
+      })
       .state('applications.create', {
         url: '/create/:scholorshipId/:scholorshipName',
         templateUrl: 'modules/scholorships/client/views/form-application.client.view.html',

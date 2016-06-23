@@ -17,6 +17,9 @@ module.exports = function(app) {
     .post(applications.update)
     .delete(applications.delete);
 
+  app.route('/api/applications/ladok/:applicationId').all(applicationsPolicy.isAllowed)
+    .post(applications.addLadokAttachment);
+
   // Finish by binding the Application middleware
   app.param('applicationId', applications.applicationByID);
 };

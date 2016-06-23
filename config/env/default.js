@@ -35,6 +35,11 @@ module.exports = {
       limits: {
         fileSize: 1*1024*1024 // Max file size in bytes (1 MB)
       }
+    },
+    ladokUpload: {
+      limits: {
+        fileSize: 10*1024*1024 // Max file size in bytes (10 MB)
+      }
     }
   }
 };

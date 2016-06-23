@@ -10,11 +10,11 @@
     <form name="applicationForm" class="form-horizontal" role="form" ng-submit="vm.save(applicationForm.$valid)" novalidate>
   <div class="col-md-12">
 
-      <div class="col-md-5">
+      <div class="col-md-6">
         <h2>Personuppgifter</h2>
         <div class="form-group" ng-repeat="q in personQuestions">
           <label class="control-label col-sm-3" for="{{ q.name }}">{{ q.question }}:</label>
-          <div class="col-sm-9">
+          <div class="col-sm-8">
             <input name="{{ q.name }}" type="text" ng-model="q.variable" id="{{ q.name }}" class="form-control" placeholder="{{ q.placeholder }}" required>
           </div>
           <div ng-messages="applicationForm.{{ q.name }}.$error" role="alert">
@@ -23,7 +23,7 @@
         </div>
         <div class="form-group">
           <label class="control-label col-sm-3" for="semesterstudied">Antal terminer studerat ink nuvarande</label>
-          <div class="col-sm-9">
+          <div class="col-sm-8">
             <input name="semesterstudied" type="text" ng-model="vm.semesterStudied" id="semesterstudied" class="form-control" required>
           </div>
           <div ng-messages="applicationForm.semesterstudied.$error" role="alert">
@@ -32,7 +32,7 @@
         </div>
         <div class="form-group">
           <label class="control-label col-sm-3" for="semesternation">Antal terminer i nationen ink nuvarande</label>
-          <div class="col-sm-9">
+          <div class="col-sm-8">
             <input name="semesternation" type="text" ng-model="vm.semesterNation" id="semesternation" class="form-control" required>
           </div>
           <div ng-messages="applicationForm.semesternation.$error" role="alert">
@@ -41,20 +41,7 @@
         </div>
       </div>
 
-      <ng-form name="ladokForm" class="form-horizontal col-md-5 col-md-offset-1" role="form" ng-submit="vm.ladokFormSave(ladokForm.$valid)" novalidate>
-          <div class="form-group">
-            <h2>Ladok-utdrag</h2>
-            <div class="row">
-              <label class="control-label col-sm-3" for="total">Fil:</label>
-              <div class="col-sm-9">
-                <input type = "file" file-model = "ladokFile"></input>
-              </div>
-            </div>
-            <button ng-click="uploadLadok()" class="btn btn-warning">Ladda upp ladok-utdrag</button>
-          </div>
-      </ng-form>
-
-      <ng-form name="universityPointsForm" class="form-horizontal col-md-5 col-md-offset-1" role="form" ng-submit="vm.universityPointsSave(universityPoints.$valid)" novalidate>
+      <ng-form name="universityPointsForm" class="form-horizontal col-md-6" role="form" ng-submit="vm.universityPointsSave(universityPoints.$valid)" novalidate>
           <div class="form-group">
             <h2>Högskolepoäng</h2>
             <label class="control-label col-sm-3" for="total">Totalt:</label>
@@ -71,7 +58,7 @@
           </div>
       </ng-form>
 
-      <ng-form name="assignmentsForm" class="form-horizontal col-md-5 col-md-offset-1" role="form" novalidate>
+      <ng-form name="assignmentsForm" class="form-horizontal col-md-6 " role="form" novalidate>
         <div class="form-group">
           <h2>Uppdrag på nationen</h2>
           <table class="table table-bordered table-hover table-condensed">
@@ -122,7 +109,7 @@
         </div>
       </ng-form>
 
-      <ng-form name="earlierScholorshipsForm" class="form-horizontal col-md-5 col-md-offset-1" role="form" novalidate>
+      <ng-form name="earlierScholorshipsForm" class="form-horizontal col-md-6 " role="form" novalidate>
         <div class="form-group">
           <h2>Tidigare erhållna stipendier</h2>
           <table class="table table-bordered table-hover table-condensed">
@@ -173,7 +160,7 @@
         </div>
       </ng-form>
 
-      <ng-form name="interruptionForm" class="form-horizontal col-md-5 col-md-offset-1" role="form" novalidate>
+      <ng-form name="interruptionForm" class="form-horizontal col-md-6 " role="form" novalidate>
         <div class="form-group">
           <h2>Avbrott från studier</h2>
           <table class="table table-bordered table-hover table-condensed">
@@ -219,7 +206,7 @@
         <div ng-if="isEditing">
           <a data-ui-sref="applications.list" class="btn btn-primary">Tillbaka</a>
         </div>
-        <button type="submit" class="btn btn-primary pull-right">{{vm.application._id ? 'Uppdatera' : 'Skicka ansökan'; }}</button>
+        <button type="submit" class="btn btn-primary pull-right">{{vm.application._id ? 'Uppdatera' : 'Nästa steg'; }}</button>
         <button onclick="window.history.back();" class="btn btn-default pull-right">Tillbaka</button>
         <div class="pull-right text-danger" ng-bind="vm.error"></div> 
       </div>
