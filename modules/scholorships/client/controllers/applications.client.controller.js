@@ -62,6 +62,7 @@
       vm.application.scholorship = vm.scholorshipId;
       vm.application.semesterStudied = vm.semesterStudied;
       vm.application.semesterNation = vm.semesterNation;
+
   
       $scope.user.universitypoints.semesters = $scope.user.universitypoints.semesters.filter(function (semester) {
         return semester.points !== 0;
@@ -89,8 +90,6 @@
         'interruption': $scope.user.interruption,
       };
 
-      // When debugging
-      console.log(vm.application);
       // Save application
       vm.application.$save($scope.successCallback, $scope.errorCallback);
     };

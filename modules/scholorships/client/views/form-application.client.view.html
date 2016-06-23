@@ -41,6 +41,19 @@
         </div>
       </div>
 
+      <ng-form name="ladokForm" class="form-horizontal col-md-5 col-md-offset-1" role="form" ng-submit="vm.ladokFormSave(ladokForm.$valid)" novalidate>
+          <div class="form-group">
+            <h2>Ladok-utdrag</h2>
+            <div class="row">
+              <label class="control-label col-sm-3" for="total">Fil:</label>
+              <div class="col-sm-9">
+                <input type = "file" file-model = "ladokFile"></input>
+              </div>
+            </div>
+            <button ng-click="uploadLadok()" class="btn btn-warning">Ladda upp ladok-utdrag</button>
+          </div>
+      </ng-form>
+
       <ng-form name="universityPointsForm" class="form-horizontal col-md-5 col-md-offset-1" role="form" ng-submit="vm.universityPointsSave(universityPoints.$valid)" novalidate>
           <div class="form-group">
             <h2>Högskolepoäng</h2>
