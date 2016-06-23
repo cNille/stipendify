@@ -25,12 +25,12 @@
     $scope.startString = dateFilter(vm.scholorship.startDate, 'yyyy-MM-dd');
     $scope.endString = dateFilter(vm.scholorship.endDate, 'yyyy-MM-dd');
     
-    var s = vm.scholorship.startDate;
-    var e = vm.scholorship.endDate;
-    var now = Date();
+    var s = dateFilter(vm.scholorship.startDate, 'yyyy-MM-dd');
+    var e = dateFilter(vm.scholorship.endDate, 'yyyy-MM-dd');
+    var now = dateFilter(new Date(), 'yyyy-MM-dd');
     $scope.isActive = s <= now && e >= now;
-    $scope.isOld = s >= now && e >= now;
-    $scope.isUpcoming = s <= now && e <= now;
+    $scope.isOld = s <= now && e <= now;
+    $scope.isUpcoming = s > now;
 
     $scope.$watch('startString', function (dateString) {
       vm.scholorship.startDate = new Date(dateString);

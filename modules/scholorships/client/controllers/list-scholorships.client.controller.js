@@ -30,13 +30,13 @@
           var now = $scope.dateFilter(new Date());
           var start = $scope.dateFilter(d.startDate);
           var end = $scope.dateFilter(d.endDate);
-          return start >= now && end > now;
+          return start <= now && end < now;
         });
         vm.upcomingScholorships = data.filter(function(d){
           var now = $scope.dateFilter(new Date());
           var start = $scope.dateFilter(d.startDate);
           var end = $scope.dateFilter(d.endDate);
-          return start < now;
+          return start > now;
         });
         vm.lists = [ { list: vm.activeScholorships, title: 'Aktiva stipendier' }, 
           { list: vm.upcomingScholorships, title: 'Kommande stipendier' },
