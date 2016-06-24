@@ -583,6 +583,19 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
           pageTitle: 'Applications List'
         }
       })
+      .state('applications.attachments', {
+        url: '/attachments/:applicationId/',
+        templateUrl: 'modules/scholorships/client/views/form-attachments.client.view.html',
+        controller: 'AttachmentsController',
+        controllerAs: 'vm',
+        resolve: {
+          applicationResolve: getApplication,
+        },
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle : 'Bilagor'
+        }
+      })
       .state('applications.create', {
         url: '/create/:scholorshipId/:scholorshipName',
         templateUrl: 'modules/scholorships/client/views/form-application.client.view.html',
@@ -820,6 +833,7 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
       vm.application.scholorship = vm.scholorshipId;
       vm.application.semesterStudied = vm.semesterStudied;
       vm.application.semesterNation = vm.semesterNation;
+
   
       $scope.user.universitypoints.semesters = $scope.user.universitypoints.semesters.filter(function (semester) {
         return semester.points !== 0;
@@ -843,12 +857,11 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
         'union': $scope.user.union,
         'scholorshipName': vm.scholorshipName,
         'universitypoints': $scope.user.universitypoints,
+        'assignments': $scope.user.assignments,
         'earlierScholorships': $scope.user.earlierScholorships,
         'interruption': $scope.user.interruption,
       };
 
-      // When debugging
-      console.log(vm.application);
       // Save application
       vm.application.$save($scope.successCallback, $scope.errorCallback);
     };
@@ -955,7 +968,7 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
       }
 
       $scope.successCallback = function (res) {
-        var nextState = $scope.isEditing ? 'applications.list' : 'applications.submitted';
+        var nextState = $scope.isEditing ? 'applications.list' : 'applications.attachments';
         $state.go(nextState, {
           applicationId: res._id
         });
@@ -1018,6 +1031,84 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
   }
 })();
 
+'use strict';
+
+angular.module('users').controller('AttachmentsController', ['$scope', '$timeout', '$window', 'Authentication', 'FileUploader', 'applicationResolve', '$state',
+  function ($scope, $timeout, $window, Authentication, FileUploader, application, $state) {
+    var vm = this;
+    $scope.user = Authentication.user;
+    vm.application = application;
+    $scope.imgUrlBase = 'public/uploads/';
+    $scope.pdfURL = $scope.imgUrlBase + vm.application._id + '.pdf';
+
+    // Create file uploader instance
+    $scope.uploader = new FileUploader({
+      url: 'api/applications/ladok/' + vm.application._id,
+      alias: 'newLadokFile'
+    });
+
+    // Set file uploader pdf filter
+    $scope.uploader.filters.push({
+      name: 'pdfFilter',
+      fn: function (item, options) {
+        var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+        return '|pdf|'.indexOf(type) !== -1;
+      }
+    });
+
+    // Called after the user selected a ladok file
+    $scope.uploader.onAfterAddingFile = function (fileItem) {
+      if ($window.FileReader) {
+        var fileReader = new FileReader();
+        fileReader.readAsDataURL(fileItem._file);
+
+        fileReader.onload = function (fileReaderEvent) {
+          $timeout(function () {
+            $scope.pdfURL = fileReaderEvent.target.result;
+          }, 0);
+        };
+      }
+    };
+
+    // Called after the user has successfully uploaded a new ladokfile
+    $scope.uploader.onSuccessItem = function (fileItem, response, status, headers) {
+      // Show success message
+      $scope.success = true;
+      // Clear upload buttons
+      $scope.cancelUpload();
+
+      
+      $state.go('applications.submitted');
+      event.preventDefault();
+      return;
+    };
+
+    // Called after the user has failed to uploaded a new picture
+    $scope.uploader.onErrorItem = function (fileItem, response, status, headers) {
+      // Clear upload buttons
+      $scope.cancelUpload();
+
+      // Show error message
+      $scope.error = response.message;
+    };
+
+    // Change user profile picture
+    $scope.uploadLadokFile = function () {
+      // Clear messages
+      $scope.success = $scope.error = null;
+
+      // Start upload
+      $scope.uploader.uploadAll();
+    };
+
+    // Cancel the upload process
+    $scope.cancelUpload = function () {
+      $scope.uploader.clearQueue();
+      $scope.pdfURL = $scope.imgUrlBase + vm.application._id + '.pdf';
+    };
+  }
+]);
+
 (function () {
   'use strict';
 
@@ -1025,16 +1116,18 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
     .module('scholorships')
     .controller('ApplicationsListController', ApplicationsListController);
 
-  ApplicationsListController.$inject = ['ApplicationsService', 'SemesterService', '$scope', '$http', '$stateParams'];
+  ApplicationsListController.$inject = ['ApplicationsService', 'SemesterService', '$scope', '$http', '$stateParams', 'dateFilter'];
 
-  function ApplicationsListController(ApplicationsService, SemesterService, $scope, $http, $stateParams) {
+  function ApplicationsListController(ApplicationsService, SemesterService, $scope, $http, $stateParams, dateFilter) {
     var vm = this;
+
+    $scope.dateFilter = dateFilter;
 
     vm.scholorshipId = $stateParams.scholorshipId;
     vm.semesters = SemesterService.getLastFourSemesters({});
     $scope.applications = ApplicationsService.query({ scholorship : vm.scholorshipId }, function(data) {
       // TODO: Find better solution than to filter here.
-      $scope.applications = data.filter(function(d){ return d.scholorship === vm.scholorshipId; });
+      $scope.applications = data.filter(function(d){ return d.scholorship === vm.scholorshipId && d.complete; });
       $scope.scholorshipName = data[0].data.scholorshipName;
     });
 
@@ -1068,25 +1161,43 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
     .module('scholorships')
     .controller('ScholorshipsListController', ScholorshipsListController);
 
-  ScholorshipsListController.$inject = ['ScholorshipsService'];
+  ScholorshipsListController.$inject = ['ScholorshipsService', 'dateFilter', '$scope'];
 
-  function ScholorshipsListController(ScholorshipsService) {
+  function ScholorshipsListController(ScholorshipsService, dateFilter, $scope) {
     var vm = this;
 
-    vm.scholorships = ScholorshipsService.query({}, function (data){
+    $scope.dateFilter = function (d) {
+      return dateFilter(d, 'yyyy-MM-dd');
+    };
+
+    // To enable using ng-model date to model.  
+    //$scope.startString = dateFilter(vm.scholorship.startDate, 'yyyy-MM-dd');
+    //$scope.endString = dateFilter(vm.scholorship.endDate, 'yyyy-MM-dd');
+    
+    vm.lists = ScholorshipsService.query({}, function (data){
       if(data){
         vm.activeScholorships = data.filter(function(d){
-          var now = Date();
-          return d.startDate <= now && d.endDate >= now;
+          var now = $scope.dateFilter(new Date());
+          var start = $scope.dateFilter(d.startDate);
+          var end = $scope.dateFilter(d.endDate);
+          return start <= now && end >= now;
         });
         vm.oldScholorships = data.filter(function(d){
-          var now = Date();
-          return d.startDate >= now && d.endDate > now;
+          var now = $scope.dateFilter(new Date());
+          var start = $scope.dateFilter(d.startDate);
+          var end = $scope.dateFilter(d.endDate);
+          return start <= now && end < now;
         });
         vm.upcomingScholorships = data.filter(function(d){
-          var now = Date();
-          return d.startDate < now;
+          var now = $scope.dateFilter(new Date());
+          var start = $scope.dateFilter(d.startDate);
+          var end = $scope.dateFilter(d.endDate);
+          return start > now;
         });
+        vm.lists = [ { list: vm.activeScholorships, title: 'Aktiva stipendier' }, 
+          { list: vm.upcomingScholorships, title: 'Kommande stipendier' },
+          { list: vm.oldScholorships, title: 'Gamla stipendier' }, 
+        ];
       }
     });
   }
@@ -1118,6 +1229,13 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
     // To enable using ng-model date to model.  
     $scope.startString = dateFilter(vm.scholorship.startDate, 'yyyy-MM-dd');
     $scope.endString = dateFilter(vm.scholorship.endDate, 'yyyy-MM-dd');
+    
+    var s = dateFilter(vm.scholorship.startDate, 'yyyy-MM-dd');
+    var e = dateFilter(vm.scholorship.endDate, 'yyyy-MM-dd');
+    var now = dateFilter(new Date(), 'yyyy-MM-dd');
+    $scope.isActive = s <= now && e >= now;
+    $scope.isOld = s <= now && e <= now;
+    $scope.isUpcoming = s > now;
 
     $scope.$watch('startString', function (dateString) {
       vm.scholorship.startDate = new Date(dateString);
@@ -1142,8 +1260,9 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
 
     // Save Scholorship
     function save(isValid) {
-      if (!isValid) {
+      if (!(isValid && dateFilter(vm.scholorship.startDate, 'yyyy-MM-dd') < dateFilter(vm.scholorship.endDate, 'yyyy-MM-dd'))) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.scholorshipForm');
+        vm.error = "Ej giltig input. P.S tänk på att startdatum inte får ske samma dag eller senare än slutdatumet.";
         return false;
       }
 

@@ -5,10 +5,12 @@
     .module('scholorships')
     .controller('ApplicationsListController', ApplicationsListController);
 
-  ApplicationsListController.$inject = ['ApplicationsService', 'SemesterService', '$scope', '$http', '$stateParams'];
+  ApplicationsListController.$inject = ['ApplicationsService', 'SemesterService', '$scope', '$http', '$stateParams', 'dateFilter'];
 
-  function ApplicationsListController(ApplicationsService, SemesterService, $scope, $http, $stateParams) {
+  function ApplicationsListController(ApplicationsService, SemesterService, $scope, $http, $stateParams, dateFilter) {
     var vm = this;
+
+    $scope.dateFilter = dateFilter;
 
     vm.scholorshipId = $stateParams.scholorshipId;
     vm.semesters = SemesterService.getLastFourSemesters({});
