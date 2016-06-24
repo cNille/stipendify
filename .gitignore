@@ -19,7 +19,7 @@ coverage/
 # MEAN.js app and assets
 # ======================
 # public/dist/
-uploads/ladok
+public/uploads/ladok/
 modules/users/client/img/profile/uploads
 config/env/local.js
 *.pem
