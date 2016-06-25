@@ -77,7 +77,7 @@
         'displayName': $scope.user.displayName,
         'personNumber': $scope.user.personNumber,
         'telephone': $scope.user.telephone,
-        'street': $scope.user.streestreet,
+        'street': $scope.user.street,
         'zipCode': $scope.user.zipCode,
         'city': $scope.user.city,
         'highschool': $scope.user.highschool,
@@ -197,10 +197,15 @@
       }
 
       $scope.successCallback = function (res) {
-        var nextState = $scope.isEditing ? 'applications.list' : 'applications.attachments';
-        $state.go(nextState, {
-          applicationId: res._id
-        });
+        if($scope.isEditing){
+          $state.go('applications.scholorlist', {
+            scholorshipId: res.scholorship
+          });
+        } else {
+          $state.go('applications.attachments', {
+            applicationId: res._id
+          });
+        }
         event.preventDefault();
         return;
       };
