@@ -1,6 +1,6 @@
 <section>
   <div class="page-header">
-    <h1>Stipendiumansökningar för {{ scholorshipName }}</h1>
+    <h1>{{ title }}</h1>
   </div>
   <div class="list-group">
     <table class="table table-bordered table-hover table-condensed">
@@ -9,6 +9,7 @@
         <td style="width:7%">Personnummer</td>
         <td style="width:20%">Namn</td>
         <td style="width:5%">Högskolepoäng</td>
+        <td style="width:5%" ng-repeat="semester in vm.semesters">{{ semester.name }}</td>
         <td style="width:5%">Bank</td>
         <td style="width:20%">Bankkonto</td>
         <td style="width:5%"></td>
@@ -25,6 +26,9 @@
         </td>
         <td>
             <span>{{ a.data.universitypoints.total || '0' }}</span>
+        </td>
+        <td ng-repeat="semester in vm.semesters track by $index">
+            <span>{{ a.data.universitypoints.semesters[$index].points || '0' }}</span>
         </td>
         <td>
             <span>{{ a.data.bank || '' }}</span>

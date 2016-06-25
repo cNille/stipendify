@@ -11,13 +11,19 @@
     var vm = this;
 
     $scope.dateFilter = dateFilter;
+    $scope.title = "Laddar...";
 
     vm.scholorshipId = $stateParams.scholorshipId;
-    vm.semesters = SemesterService.getLastFourSemesters({});
+    vm.semesters = SemesterService.getLastFourSemesters([]);
     $scope.applications = ApplicationsService.query({ scholorship : vm.scholorshipId }, function(data) {
       // TODO: Find better solution than to filter here.
       $scope.applications = data.filter(function(d){ return d.scholorship === vm.scholorshipId && d.complete; });
-      $scope.scholorshipName = data[0].data.scholorshipName;
+      $scope.scholorshipName = $scope.applications[0].data.scholorshipName;
+      if($scope.applications.length > 0){
+        $scope.title = "Stipendiumansökningar för " + $scope.scholorshipName;
+      } else {
+        $scope.title = "Inga ansökningar har inkommit än...";
+      }
     });
 
     $scope.propertyName = 'age';
