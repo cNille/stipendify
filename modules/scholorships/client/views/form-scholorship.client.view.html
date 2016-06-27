@@ -24,7 +24,7 @@
         </div>
         <div class="form-group">
           <label for="enddate">Slutdatum*</label>
-          <input type="datetime" class="form-control" id="enddate" name="enddate" ng-model="endString" />
+          <input type="datetime" class="form-control" id="enddate" name="enddate" ng-model="endString" placeholder="yyyy-MM-DD" />
           <span class="text-danger" ng-show="vm.form.scholorshipForm.enddate.$error.required">Obligatorisk!</span>
           <span class="text-danger" ng-show="vm.form.scholorshipForm.enddate.$error.date">Inte ett giltigt datum!</span>
         </div>
