@@ -16,6 +16,7 @@ var ScholorshipSchema = new Schema({
     required: 'Please fill Scholorship name',
     trim: true
   },
+  funds: [{name: String, size: Number, description: String}],
   description: String,
   startDate: Date,
   endDate: Date,
