@@ -13,11 +13,11 @@
           </div>
         </div>
         <ng-form name="fundsForm" class="form-horizontal " role="form" novalidate>
-            <h2>Fonder*</h2>
+            <h2>Fonder</h2>
             <table class="table table-bordered table-hover table-condensed">
               <tr style="font-weight: bold">
-                <td style="width:30%">Namn</td>
-                <td style="width:30%">Summa(kr)</td>
+                <td style="width:30%">Namn*</td>
+                <td style="width:30%">Summa(kr)*</td>
                 <td style="width:30%">Beskrivning</td>
                 <td style="width:10%"></td>
               </tr>
@@ -43,7 +43,7 @@
                     <span>{{ a.description }}</span>
                   </div>
                   <div ng-show="vm.scholorship.funds[$index].edit">
-                    <textarea type="string" ng-model="a.description" id="{{ $index }}-description" class="form-control" required></textarea>
+                    <textarea type="string" ng-model="a.description" id="{{ $index }}-description" class="form-control" ></textarea>
                   </div>
                 </td>
                 <td style="white-space: nowrap">
