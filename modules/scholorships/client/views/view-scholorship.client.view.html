@@ -2,44 +2,65 @@
   <div class="page-header">
     <h1 data-ng-bind="vm.scholorship.name"></h1>
   </div>
-  <div class=".col-md-6 .col-md-offset-2">
-    <label>Startdatum:</label><div ng-bind="startString"></div>
-    <label>Slutdatum:</label><div ng-bind="endString"></div>
-    <div ng-bind-html="htmlDescription"></div>
-    
-    <button onclick="window.history.back();" class="btn btn-default ">Tillbaka</button>
-    <button data-ng-show="isUpcoming" class="btn btn-primary" disabled="disabled">
-      <i class="glyphicon glyphicon-plus-sign"></i>
-      Ansökningstiden börjar {{ startString }}
-    </button>
-    <button data-ng-show="isOld" class="btn btn-primary" disabled="disabled">
-      <i class="glyphicon glyphicon-plus-sign"></i>
-      Ansökningstiden har passerat
-    </button>
-    <a data-ng-show="isActive" class="btn btn-primary"
-       data-ui-sref="applications.create({ scholorshipId: vm.scholorship._id, scholorshipName: vm.scholorship.name})">
-      <i class="glyphicon glyphicon-plus-sign"></i>
-      Ansök nu
-    </a>
-    <hr />
-    <div data-ng-show="vm.isAdmin">
-      <h4>För admin</h4>
-      <a class="btn btn-primary"
-         data-ui-sref="applications.scholorlist({ scholorshipId: vm.scholorship._id})">
-        <i class="glyphicon glyphicon-th-list"></i>
-         Se alla inkomna ansökningar
-      </a>
-    </div>
-  </div>
-  <div class="pull-right"
-       data-ng-show="vm.scholorship.isCurrentUserOwner">
+  <button onclick="window.history.back();" class="btn btn-default ">Tillbaka</button>
+  <button data-ng-show="isUpcoming" class="btn btn-primary" disabled="disabled">
+    <i class="glyphicon glyphicon-plus-sign"></i>
+    Ansökningstiden börjar {{ startString }}
+  </button>
+  <button data-ng-show="isOld" class="btn btn-primary" disabled="disabled">
+    <i class="glyphicon glyphicon-plus-sign"></i>
+    Ansökningstiden har passerat
+  </button>
+  <a data-ng-show="isActive" class="btn btn-primary"
+    data-ui-sref="applications.create({ scholorshipId: vm.scholorship._id, scholorshipName: vm.scholorship.name})">
+    <i class="glyphicon glyphicon-plus-sign"></i>
+    Ansök nu
+  </a>
+  <hr>
+  <div data-ng-show="vm.isAdmin">
+    <h4>För admin</h4>
     <a class="btn btn-primary"
-       data-ui-sref="scholorships.edit({ scholorshipId: vm.scholorship._id })">
+      data-ui-sref="applications.scholorlist({ scholorshipId: vm.scholorship._id})">
+      <i class="glyphicon glyphicon-th-list"></i>
+      Se alla inkomna ansökningar
+    </a>
+    <a class="btn btn-warning"
+      data-ui-sref="scholorships.edit({ scholorshipId: vm.scholorship._id })">
       <i class="glyphicon glyphicon-edit"></i>
+      Uppdatera
     </a>
-    <a class="btn btn-primary" data-ng-click="vm.remove()">
+    <a class="btn btn-danger" data-ng-click="vm.remove()">
       <i class="glyphicon glyphicon-trash"></i>
+      Radera
     </a>
+  </div>
+  <hr>
+  <div class=".col-md-6 .col-md-offset-2">
+    <h3>Ansökningsperiod: </h3> <span ng-bind="startString"></span> - <span ng-bind="endString"></span>
+    <div class="form-group">
+        <h3>Fonder</h3>
+        <table class="table table-bordered table-hover table-condensed">
+          <tr style="font-weight: bold">
+            <td style="width:30%">Namn</td>
+            <td style="width:10%">Summa(kr)</td>
+            <td style="width:60%">Beskrivning</td>
+          </tr>
+          <tr ng-repeat="a in vm.scholorship.funds">
+            <td>
+              <span>{{ a.name }}</span>
+            </td>
+            <td>
+              <span>{{ a.size }}</span>
+            </td>
+            <td>
+              <span>{{ a.description }}</span>
+            </td>
+          </tr>
+        </table>
+    </div>
+    <h3>Utlysningstext</h3>
+    <div ng-bind-html="htmlDescription"></div>
+    <br>
   </div>
   <small>
     <em class="text-muted">
