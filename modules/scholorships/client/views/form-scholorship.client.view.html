@@ -12,6 +12,54 @@
             <p class="help-block error-text" ng-message="required">Stipendiumnamn är obligatorisk.</p>
           </div>
         </div>
+        <ng-form name="fundsForm" class="form-horizontal " role="form" novalidate>
+            <h2>Fonder*</h2>
+            <table class="table table-bordered table-hover table-condensed">
+              <tr style="font-weight: bold">
+                <td style="width:30%">Namn</td>
+                <td style="width:30%">Summa</td>
+                <td style="width:30%">Beskrivning</td>
+                <td style="width:10%"></td>
+              </tr>
+              <tr ng-repeat="a in vm.scholorship.funds track by $index">
+                <td>
+                  <div ng-show="!vm.scholorship.funds[$index].edit">
+                    <span>{{ a.name }}</span>
+                  </div>
+                  <div ng-show="vm.scholorship.funds[$index].edit">
+                    <input type="string" ng-model="a.name" id="{{ $index }}-name" class="form-control" required>
+                  </div>
+                </td>
+                <td>
+                  <div ng-show="!vm.scholorship.funds[$index].edit">
+                    <span>{{ a.size }}</span>
+                  </div>
+                  <div ng-show="vm.scholorship.funds[$index].edit">
+                    <input type="number" ng-model="a.size" id="{{ $index }}-size" class="form-control" required>
+                  </div>
+                </td>
+                <td>
+                  <div ng-show="!vm.scholorship.funds[$index].edit">
+                    <span>{{ a.description }}</span>
+                  </div>
+                  <div ng-show="vm.scholorship.funds[$index].edit">
+                    <textarea type="string" ng-model="a.description" id="{{ $index }}-description" class="form-control" required></textarea>
+                  </div>
+                </td>
+                <td style="white-space: nowrap">
+                  <div class="buttons" ng-show="vm.scholorship.funds[$index].edit">
+                    <button type="button" class="btn btn-primary" ng-click="saveFund($index, fundsForm.$valid)"><i class="glyphicon glyphicon-ok"></i></button>
+                    <button class="btn btn-danger" ng-click="deleteFund($index)"><i class="glyphicon glyphicon-trash"></i></button>
+                  </div>  
+                  <div type="button" class="buttons" ng-show="!vm.scholorship.funds[$index].edit">
+                    <button type="button" class="btn btn-primary" ng-click="vm.scholorship.funds[$index].edit = true;"><i class="glyphicon glyphicon-edit"></i></a>
+                  </div>  
+                </td>
+              </tr>
+            </table>
+            <p class="text-danger" ng-bind="interruptionerror"></p>
+            <button type="button" ng-click="addFund(vm.scholorship.funds)" class="btn btn-warning">Lägg till stipendiefond</button>
+        </ng-form>
         <div class="form-group">
           <label class="control-label" for="description">Utlysningstext*</label>
           <textarea name="description" ng-model="vm.scholorship.description" id="description" class="form-control" required></textarea>

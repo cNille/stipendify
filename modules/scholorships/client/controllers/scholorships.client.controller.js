@@ -18,7 +18,6 @@
     vm.remove = remove;
     vm.save = save;
     
-    // Det Nille lagt dit, härifrån...
     vm.isAdmin = vm.authentication.user.roles && vm.authentication.user.roles.indexOf('admin') >= 0;
   
     // To enable using ng-model date to model.  
@@ -39,12 +38,23 @@
       vm.scholorship.endDate = new Date(dateString);
     });
   
-
     // To show description in HTML.
     $scope.htmlDescription = $sce.trustAsHtml(vm.scholorship.description);
 
+
+    $scope.addFund = function() {
+      if(!vm.scholorship.funds) {
+        vm.scholorship.funds = [];
+      }
+      vm.scholorship.funds.push({ name: '', size: 0, description: '', edit: true});
+    };
+
+    $scope.saveFund = function (pos, valid) {
+      if(valid){
+        vm.scholorship.funds[pos].edit = false;
+      }
+    };
   
-    // ... till hit
 
     // Remove existing Scholorship
     function remove() {
