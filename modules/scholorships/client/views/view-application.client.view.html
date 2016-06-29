@@ -1,7 +1,33 @@
 <section>
   <div class="page-header">
-  <h1>Ansökan</h1>
+    <h2>Ansökan</h2>
+  <button onclick="window.history.back();" class="btn btn-default ">Tillbaka</button>
   </div>
+  <div class="row">
+    <div ng-show="!editAllowance">
+      <label class="col-sm-3 text-right">Utdelning (kr):</label>
+      <div class="col-sm-9" ng-bind="vm.allowance"></div>
+    </div>
+    <div ng-show="editAllowance">
+      <label class="col-sm-3 text-right">Utdelning:</label>
+      <input type="string" ng-model="vm.allowance" class="col-sm-9" ></input>
+    </div>
+  </div>
+    <div class="buttons" ng-show="editAllowance">
+      <button type="button" class="btn btn-primary" ng-click="updateAllowance()">
+        <i class="glyphicon glyphicon-ok"></i>
+        Spara utdelningssumma
+      </button>
+    </div>  
+    <div type="button" class="buttons" ng-show="!editAllowance">
+      <button type="button" class="btn btn-primary" ng-click="editAllowance = true"><i class="glyphicon glyphicon-edit"></i>
+      Uppdatera utdelning till denna ansökan
+    </div>  
+  </div>
+  <hr>
+
+
+
   <div class="row">
     <label class="col-sm-3 text-right">Ansökan-id:</label>
     <div class="col-sm-9" ng-bind="vm.application._id"></div>
@@ -29,7 +55,7 @@
 
 
 
-  <h2>Högskolepoäng</h2>
+  <h3>Högskolepoäng</h3>
   <div class="row">
     <label class="col-sm-3 text-right">Totalt:</label>
     <div class="col-sm-9" ng-bind="vm.application.data.universitypoints.total"></div>
@@ -42,7 +68,7 @@
   </div>
 
   <div class="row">
-    <h2>Uppdrag på nationen</h2>
+    <h3>Uppdrag på nationen</h3>
     <table class="table table-bordered table-hover table-condensed">
       <tr style="font-weight: bold">
         <td style="width:20%">Termin</td>
@@ -60,7 +86,7 @@
   </div>
 
   <div class="row">
-    <h2>Tidigare erhållna stipendier</h2>
+    <h3>Tidigare erhållna stipendier</h3>
     <table class="table table-bordered table-hover table-condensed">
       <tr style="font-weight: bold">
         <td style="width:20%">Termin</td>
@@ -82,7 +108,7 @@
   </div>
 
   <div class="row">
-    <h2>Avbrott från studier</h2>
+    <h3>Avbrott från studier</h3>
     <table class="table table-bordered table-hover table-condensed">
       <tr style="font-weight: bold">
         <td style="width:20%">Period</td>
