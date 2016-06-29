@@ -21,7 +21,9 @@
 
     vm.semesterStudied = vm.application.semesterStudied; 
     vm.semesterNation = vm.application.semesterNation;
-    vm.allowance = vm.application.data.allowance;
+    if(vm.application.data) {
+      vm.allowance = vm.application.data.allowance;
+    }
     vm.error = null;
     vm.form = {};
     vm.remove = remove;
