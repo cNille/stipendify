@@ -11,7 +11,8 @@
         <td style="width:5%">Högskolepoäng</td>
         <td style="width:5%" ng-repeat="semester in vm.semesters">{{ semester.name }}</td>
         <td style="width:5%">Bank</td>
-        <td style="width:20%">Bankkonto</td>
+        <td style="width:10%">Bankkonto</td>
+        <td style="width:10%">Utdelning</td>
         <td style="width:5%"></td>
       </tr>
       <tr ng-repeat="a in applications">
@@ -36,12 +37,29 @@
         <td>
             <span>{{ a.data.bankaccount || '' }}</span>
         </td>
+        <td>
+            <span>{{ a.data.allowance || '0' }}</span>
+        </td>
         <td style="white-space: nowrap">
           <div class="buttons" ng-show="!rowform.$visible">
             <a data-ui-sref="applications.view({ applicationId: a._id })" class="btn btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a>
             <button class="btn btn-danger" ng-click="removeApplication($index)"><i class="glyphicon glyphicon-trash"></i></button>
           </div>  
         </td>
+      </tr>
+      <tr class="active">
+        <td>  </td>
+        <td>  </td>
+        <td>  </td>
+        <td>  </td>
+        <td>  </td>
+        <td>  </td>
+        <td>  </td>
+        <td>  </td>
+        <td>  </td>
+        <td> <b>Totalt</b> </td>
+        <td> {{ totalFunds || 0 }} </td>
+        <td> </td>
       </tr>
     </table>
   </div>
