@@ -21,6 +21,7 @@
 
     vm.semesterStudied = vm.application.semesterStudied; 
     vm.semesterNation = vm.application.semesterNation;
+    vm.allowance = vm.application.data.allowance;
     vm.error = null;
     vm.form = {};
     vm.remove = remove;
@@ -53,6 +54,11 @@
       }, function (response) {
         $scope.error = response.data.message;
       });
+    };
+
+    $scope.updateAllowance = function () {
+      $scope.updateApplication();
+      $scope.editAllowance = false;
     };
 
     // Save application to db
@@ -89,6 +95,7 @@
         'assignments': $scope.user.assignments,
         'earlierScholorships': $scope.user.earlierScholorships,
         'interruption': $scope.user.interruption,
+        'allowance': vm.allowance,
       };
 
       // Save application
