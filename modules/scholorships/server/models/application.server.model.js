@@ -10,8 +10,8 @@ var filePlugin = filePluginLib.filePlugin;
 var make_upload_to_model = filePluginLib.make_upload_to_model;
 
 var path = require('path');
-var uploads_base = path.join(__dirname, "public/uploads");
-var uploads = path.join(uploads_base, "u");
+var uploads_base = path.join(__dirname, 'public/uploads');
+var uploads = path.join(uploads_base, 'u');
 
 /**
  * Application Schema
@@ -57,7 +57,7 @@ var ApplicationSchema = new Schema({
 
 
 ApplicationSchema.plugin(filePlugin, {
-  name: "ladok",
+  name: 'ladok',
   upload_to: make_upload_to_model(uploads, 'photos'),
   relative_to: uploads_base
 });

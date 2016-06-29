@@ -46,7 +46,7 @@
       if(!vm.scholorship.funds) {
         vm.scholorship.funds = [];
       }
-      vm.scholorship.funds.push({ name: '', size: 0, description: '', edit: true});
+      vm.scholorship.funds.push({ name: '', size: 0, description: '', edit: true });
     };
 
     $scope.saveFund = function (pos, valid) {
@@ -67,7 +67,7 @@
     function save(isValid) {
       if (!(isValid && dateFilter(vm.scholorship.startDate, 'yyyy-MM-dd') < dateFilter(vm.scholorship.endDate, 'yyyy-MM-dd'))) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.scholorshipForm');
-        vm.error = "Ej giltig input. P.S tänk på att startdatum inte får ske samma dag eller senare än slutdatumet.";
+        vm.error = 'Ej giltig input. P.S tänk på att startdatum inte får ske samma dag eller senare än slutdatumet.';
         return false;
       }
 
