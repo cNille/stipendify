@@ -14,6 +14,8 @@
     vm.scholorshipId = $stateParams.scholorshipId;
     vm.authentication = Authentication;
     vm.application = application;
+    vm.ladok_url = "/uploads/ladok/" + vm.application._id + ".pdf";
+    //vm.ladok_url = $scope.trustAsResourceUrl(vm.ladok_url);
 
     $scope.isEditing = vm.scholorshipId === undefined && vm.application._id;
     vm.scholorshipName = $scope.isEditing ? vm.application.data.scholorshipName : $stateParams.scholorshipName;
