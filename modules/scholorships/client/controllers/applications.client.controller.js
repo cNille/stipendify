@@ -87,7 +87,7 @@
         'displayName': $scope.user.displayName,
         'personNumber': $scope.user.personNumber,
         'telephone': $scope.user.telephone,
-        'street': $scope.user.street,
+        'streetaddress': $scope.user.street,
         'zipCode': $scope.user.zipCode,
         'city': $scope.user.city,
         'highschool': $scope.user.highschool,
