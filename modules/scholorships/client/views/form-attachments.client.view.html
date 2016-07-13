@@ -8,6 +8,7 @@
           <span class="btn btn-default btn-file">
               Välj PDF <input type="file" nv-file-select uploader="uploader">
           </span>
+          <button onclick="window.history.back();" class="btn btn-default ">Tillbaka</button>
         </div>
         <div class="text-center form-group" ng-show="uploader.queue.length">
           <button class="btn btn-primary" ng-click="uploadLadokFile();">Skicka in ladok-fil</button>
