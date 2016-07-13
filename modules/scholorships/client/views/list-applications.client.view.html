@@ -62,7 +62,8 @@
         <td> </td>
       </tr>
     </table>
-    <button ng-click="exportToExcel()">Exportera till Excel</button>
+    <button ng-json-export-excel data="dataList" report-fields="datafields" filename=" 'ansokningar' ">Exportera till excel</button>
+
   </div>
   <div class="alert alert-warning text-center" data-ng-if="vm.applications.$resolved && !vm.applications.length">
     Det finns inga ansökningar än.

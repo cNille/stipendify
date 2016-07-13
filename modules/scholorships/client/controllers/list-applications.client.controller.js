@@ -25,7 +25,82 @@
       } else {
         $scope.title = 'Inga ansökningar har inkommit än...';
       }
+      $scope.dataList = $scope.convertToExcelFormat($scope.applications);
     });
+
+    $scope.dataList = [];
+    $scope.datafields = {
+      'data.displayName' : 'Namn',
+      'semesterStudied' : 'Termin Studerat',
+      'semesterNation' : 'Termin Nation',
+      'data.personNumber' : 'Personnr',
+      'data.telephone' : 'Telefon',
+      'data.streetaddress' : 'Adress',
+      'data.zipCode' : 'Postnr',
+      'data.city' : 'Stad',
+      'data.highschool' : 'Gymnasium',
+      'data.bank' : 'Bank',
+      'data.bankaccount' : 'Bankkonto',
+      'data.union' : 'Kår',
+      'data.universitypoints.total' : 'HP totalt',
+      'data.interruption' : 'Avbrott',
+    };
+
+    $scope.convertToExcelFormat = function(applications){
+      var dataList = [];
+      var unipoints = new Set();
+      var assignments = new Set();
+      var earlierScholorships = new Set();
+
+      function search(nameKey, myArray){
+        for (var i=0; i < myArray.length; i++) {
+          if (myArray[i].name === nameKey) {
+            return myArray[i];
+          }
+        }
+        return {};
+      }
+      // Loop through applications to get all unique semesters.
+      applications.forEach(function (a){
+        a.data.universitypoints.semesters.forEach(function (s){
+          unipoints.add(s.name);
+        });
+        a.data.assignments.forEach(function (s){
+          var str = s.semester.split('-');
+          str.forEach(function (x){
+            assignments.add(x);
+          });
+        });
+        a.data.earlierScholorships.forEach(function (s){
+          earlierScholorships.add(s.semester);
+        });
+      });
+      applications.forEach(function (a){
+        unipoints.forEach(function(u){
+          $scope.datafields['data.universitypoints.' + u] = 'HP' + u;
+          a.data.universitypoints[u] = search(u, a.data.universitypoints.semesters).points;
+        });
+
+        assignments.forEach(function(u){
+          u.split("-").forEach(function (x){
+            $scope.datafields['data.assignments.' + u] = 'Uppdrag ' + u;
+            a.data.assignments[u] = search(x, a.data.assignments).semester;
+          });
+        });
+        earlierScholorships.forEach(function(u){
+          $scope.datafields['data.earlierScholorships.' + u] = 'Tidigare stip.' + u;
+          a.data.earlierScholorships[u] = search(u, a.data.earlierScholorships).semester;
+        });
+
+        var inter = a.data.interruption.reduce(function(pre, curr) {
+          return pre + ', ' + curr.when + ': ' + curr.why ;
+        });
+        a.data.interruption = inter;   
+        dataList.push(a);
+      });
+      return dataList;
+    };
+
 
     $scope.propertyName = 'age';
     $scope.reverse = true;
