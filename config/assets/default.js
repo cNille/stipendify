@@ -11,7 +11,6 @@ module.exports = {
         'public/lib/jquery/dist/jquery.js',
         'public/lib/angular/angular.js',
         'public/lib/angular-resource/angular-resource.js',
-        'public/lib/json-export-excel/dest/json-export-excel.js',
         'public/lib/file-saver/FileSaver.js',
         'public/lib/angular-animate/angular-animate.js',
         'public/lib/angular-messages/angular-messages.js',
