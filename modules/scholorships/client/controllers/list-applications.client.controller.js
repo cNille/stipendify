@@ -19,7 +19,7 @@
       // TODO: Find better solution than to filter here.
       $scope.applications = data.filter(function(d){ return d.scholorship === vm.scholorshipId && d.complete; });
       $scope.scholorshipName = $scope.applications[0].data.scholorshipName;
-      $scope.totalFunds = data.reduce(function(prev, curr){ return { data: { allowance : prev.data.allowance + curr.data.allowance } }; }).data.allowance;
+      $scope.totalFunds = $scope.applications.reduce(function(prev, curr){ return { data: { allowance : prev.data.allowance + curr.data.allowance } }; }).data.allowance;
       if($scope.applications.length > 0){
         $scope.title = 'Stipendiumansökningar för ' + $scope.scholorshipName;
       } else {
