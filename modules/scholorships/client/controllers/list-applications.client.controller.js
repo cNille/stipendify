@@ -52,9 +52,9 @@
       var assignments = new Set();
       var earlierScholorships = new Set();
 
-      function search(nameKey, myArray){
+      function search(key, nameKey, myArray){
         for (var i=0; i < myArray.length; i++) {
-          if (myArray[i].name === nameKey) {
+          if (myArray[i][key] === nameKey) {
             return myArray[i];
           }
         }
@@ -77,24 +77,30 @@
       });
       applications.forEach(function (a){
         unipoints.forEach(function(u){
-          $scope.datafields['data.universitypoints.' + u] = 'HP' + u;
-          a.data.universitypoints[u] = search(u, a.data.universitypoints.semesters).points;
+          $scope.datafields['data.universitypoints.' + u] = 'Poäng ' + u;
+          a.data.universitypoints[u] = search('name', u, a.data.universitypoints.semesters).points;
         });
 
         assignments.forEach(function(u){
           u.split("-").forEach(function (x){
             $scope.datafields['data.assignments.' + u] = 'Uppdrag ' + u;
-            a.data.assignments[u] = search(x, a.data.assignments).semester;
+            a.data.assignments[u] = search('semester', x, a.data.assignments).name;
           });
         });
         earlierScholorships.forEach(function(u){
           $scope.datafields['data.earlierScholorships.' + u] = 'Tidigare stip.' + u;
-          a.data.earlierScholorships[u] = search(u, a.data.earlierScholorships).semester;
+          var earl = search('semester', u, a.data.earlierScholorships);
+          a.data.earlierScholorships[u] = earl.name + ": " + earl.money + "kr";
         });
 
-        var inter = a.data.interruption.reduce(function(pre, curr) {
-          return pre + ', ' + curr.when + ': ' + curr.why ;
-        });
+        var inter;
+        if(a.data.interruption.length > 1){
+          inter = a.data.interruption.reduce(function(pre, curr) {
+            return pre + ', ' + curr.when + ': ' + curr.why ;
+          });
+        } else if(a.data.interruption.length === 1) {
+          inter = a.data.interruption[0].when + ": " + a.data.interruption[0].why;
+        }
         a.data.interruption = inter;   
         dataList.push(a);
       });
