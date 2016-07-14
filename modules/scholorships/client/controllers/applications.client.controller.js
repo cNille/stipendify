@@ -239,7 +239,7 @@
         variable : $scope.user.telephone 
       }, { name : 'street', 
         question : 'Gatuadress', 
-        variable : $scope.user.street 
+        variable : $scope.user.streetaddress 
       }, { name : 'zipcode', 
         question : 'Post nummer', 
         variable : $scope.user.zipCode 
