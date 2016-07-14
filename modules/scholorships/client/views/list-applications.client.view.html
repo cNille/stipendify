@@ -62,10 +62,11 @@
         <td> </td>
       </tr>
     </table>
-    <button ng-json-export-excel data="dataList" report-fields="datafields" filename=" 'ansokningar' ">Exportera till excel</button>
-
+    <button ng-json-excel ng-click="myOnclickFunction(datafields, applications)" class="btn btn-warning">Exportera till csv-fil</button>
   </div>
   <div class="alert alert-warning text-center" data-ng-if="vm.applications.$resolved && !vm.applications.length">
     Det finns inga ansökningar än.
   </div>
+
+  <button onclick="window.history.back();" class="btn btn-default ">Tillbaka</button>
 </section>
