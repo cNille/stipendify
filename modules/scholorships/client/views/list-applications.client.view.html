@@ -7,12 +7,13 @@
       <tr style="font-weight: bold">
         <td style="width:7%">Skapat</td>
         <td style="width:7%">Personnummer</td>
-        <td style="width:20%">Namn</td>
+        <td style="width:15%">Namn</td>
         <td style="width:5%">Högskolepoäng</td>
         <td style="width:5%" ng-repeat="semester in vm.semesters">{{ semester.name }}</td>
         <td style="width:5%">Bank</td>
         <td style="width:10%">Bankkonto</td>
-        <td style="width:10%">Utdelning</td>
+        <td style="width:10%">Bilaga</td>
+        <td style="width:5%">Utdelning</td>
         <td style="width:5%"></td>
       </tr>
       <tr ng-repeat="a in applications">
@@ -38,7 +39,10 @@
             <span>{{ a.data.bankaccount || '' }}</span>
         </td>
         <td>
-            <span>{{ a.data.allowance || '0' }}</span>
+          <a type="button" target="_blank" class="btn btn-primary" ng-href="/uploads/ladok/{{ a._id }}.pdf" >Ladok</a>
+        </td>
+        <td>
+            <span>{{ a.data.allowance || '0' }}kr</span>
         </td>
         <td style="white-space: nowrap">
           <div class="buttons" ng-show="!rowform.$visible">
@@ -57,8 +61,9 @@
         <td>  </td>
         <td>  </td>
         <td>  </td>
+        <td>  </td>
         <td> <b>Totalt</b> </td>
-        <td> {{ totalFunds || 0 }} </td>
+        <td> {{ totalFunds || 0 }}kr </td>
         <td> </td>
       </tr>
     </table>
