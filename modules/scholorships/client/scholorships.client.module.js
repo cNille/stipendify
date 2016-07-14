@@ -1,5 +1,5 @@
 (function (app) {
   'use strict';
 
-  app.registerModule('scholorships', ['ngJsonExportExcel']);
+  app.registerModule('scholorships');
 })(ApplicationConfiguration);
