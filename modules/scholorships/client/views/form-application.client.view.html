@@ -163,18 +163,18 @@
             <tr ng-repeat="a in user.interruption track by $index">
               <td>
                 <div ng-show="!user.interruption[$index].edit">
-                  <span>{{ a.why }}</span>
-                </div>
-                <div ng-show="user.interruption[$index].edit">
-                  <input type="string" ng-model="a.why" id="{{ $index }}-why-int" class="form-control" required>
-                </div>
-              </td>
-              <td>
-                <div ng-show="!user.interruption[$index].edit">
                   <span>{{ a.when }}</span>
                 </div>
                 <div ng-show="user.interruption[$index].edit">
                   <input type="string" ng-model="a.when" id="{{ $index }}-when-int" class="form-control" required>
+                </div>
+              </td>
+              <td>
+                <div ng-show="!user.interruption[$index].edit">
+                  <span>{{ a.why }}</span>
+                </div>
+                <div ng-show="user.interruption[$index].edit">
+                  <input type="string" ng-model="a.why" id="{{ $index }}-why-int" class="form-control" required>
                 </div>
               </td>
               <td style="white-space: nowrap">
