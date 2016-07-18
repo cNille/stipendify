@@ -11,9 +11,9 @@
           $scope.filename = 'ansokningar';
           var fields = [];
           var header = [];
-          var separator = $scope.separator || ',';
+          var separator = $scope.separator || ';';
 
-          $scope.myOnclickFunction = function (myfields, applications) {
+          $scope.myOnclickFunction = function (;yfields, applications) {
             angular.forEach(myfields, function(field, key) {
               if(!field || !key) {
                 throw new Error('error json report fields');
