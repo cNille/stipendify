@@ -39,7 +39,7 @@
             <span>{{ a.data.bankaccount || '' }}</span>
         </td>
         <td>
-          <a type="button" target="_blank" class="btn btn-primary" ng-href="/uploads/ladok/{{ a._id }}.pdf" >Ladok</a>
+          <a type="button" target="_blank" class="btn btn-primary" ng-href="/api/applications/attachment/{{ a.ladokfile }}" >Ladok</a>
         </td>
         <td>
             <span>{{ a.data.allowance || '0' }}kr</span>
