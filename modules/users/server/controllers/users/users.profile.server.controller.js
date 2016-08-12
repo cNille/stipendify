@@ -51,6 +51,16 @@ exports.update = function (req, res) {
 };
 
 /**
+ * Get profile picture
+ */
+exports.getProfilePicture = function (req, res) {
+  var img = req.params.image;
+  var url = config.downloads.profileFetch.storage.url;
+  res.redirect(url + img);
+};
+
+
+/**
  * Update profile picture
  */
 exports.changeProfilePicture = function (req, res) {
@@ -69,7 +79,7 @@ exports.changeProfilePicture = function (req, res) {
           message: 'Error occurred while uploading profile picture'
         });
       } else {
-        user.profileImageURL = config.uploads.profileUpload.dest + req.file.filename;
+        user.profileImageURL = req.file.path.split("/").reverse()[0];
 
         user.save(function (saveError) {
           if (saveError) {
