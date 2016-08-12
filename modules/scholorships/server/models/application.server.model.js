@@ -5,13 +5,6 @@
  */
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
-var filePluginLib = require('mongoose-file');
-var filePlugin = filePluginLib.filePlugin;
-var make_upload_to_model = filePluginLib.make_upload_to_model;
-
-var path = require('path');
-var uploads_base = path.join(__dirname, 'public/uploads');
-var uploads = path.join(uploads_base, 'u');
 
 /**
  * Application Schema
@@ -29,6 +22,7 @@ var ApplicationSchema = new Schema({
     type: Boolean,
     default: false
   },
+  'ladokfile': String,
   'semesterStudied': String,
   'semesterNation': String,
   data: {
@@ -54,13 +48,5 @@ var ApplicationSchema = new Schema({
     default: Date.now
   }
 });
-
-
-ApplicationSchema.plugin(filePlugin, {
-  name: 'ladok',
-  upload_to: make_upload_to_model(uploads, 'photos'),
-  relative_to: uploads_base
-});
-
 
 mongoose.model('Application', ApplicationSchema);
