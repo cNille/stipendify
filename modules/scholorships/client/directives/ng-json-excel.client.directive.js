@@ -13,7 +13,7 @@
           var header = [];
           var separator = $scope.separator || ';';
 
-          $scope.myOnclickFunction = function (;yfields, applications) {
+          $scope.myOnclickFunction = function (myfields, applications) {
             angular.forEach(myfields, function(field, key) {
               if(!field || !key) {
                 throw new Error('error json report fields');
