@@ -17,6 +17,9 @@ module.exports = function(app) {
     .post(applications.update)
     .delete(applications.delete);
 
+  app.route('/api/applications/attachment/:filename').all(applicationsPolicy.isAllowed)
+    .get(applications.getLadokAttachment);
+
   app.route('/api/applications/ladok/:applicationId').all(applicationsPolicy.isAllowed)
     .post(applications.addLadokAttachment);
 

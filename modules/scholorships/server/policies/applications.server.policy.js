@@ -23,6 +23,9 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/applications/ladok/:applicationId',
       permissions: ['*']
+    }, {
+      resources: '/api/applications/attachment/:filename',
+      permissions: ['*']
     }]
   }, {
     roles: ['stipendiumansvarig'],
@@ -34,6 +37,9 @@ exports.invokeRolesPolicies = function () {
       permissions: ['get']
     }, {
       resources: '/api/applications/ladok/:applicationId',
+      permissions: ['get', 'post']
+    }, {
+      resources: '/api/applications/attachment/:filename',
       permissions: ['get', 'post']
     }]
   }, {
@@ -47,6 +53,9 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: '/api/applications/ladok/:applicationId',
       permissions: ['post']
+    }, {
+      resources: '/api/applications/attachment/:filename',
+      permissions: ['post']
     }]
   }, {
     roles: ['guest'],
@@ -58,6 +67,9 @@ exports.invokeRolesPolicies = function () {
       permissions: []
     }, {
       resources: '/api/applications/ladok/:applicationId',
+      permissions: []
+    }, {
+      resources: '/api/applications/attachment/:filename',
       permissions: []
     }]
   }]);
