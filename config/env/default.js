@@ -53,6 +53,7 @@ module.exports = {
     },
     ladokFetch: {
       storage: {
+        url: 'ftp://' + ftp_get.user + ':' + ftp_get.password + '@' + ftp_get.host + '/sda1/stipendify/attachments/',
         basepath: '/sda1/stipendify/attachments/',
         ftp: ftp_get
       }
@@ -69,6 +70,10 @@ module.exports = {
       }
     },
     ladokUpload: {
+      storage: new FTPStorage({
+        basepath: '/sda1/stipendify/attachments/',
+        ftp: ftp_post
+      }),
       limits: {
         fileSize: 10*1024*1024 // Max file size in bytes (10 MB)
       }
