@@ -125,23 +125,21 @@ exports.applicationByID = function(req, res, next, id) {
 };
 
 /**
+ * Get ladok attachment
+ */
+exports.getLadokAttachment = function (req, res) {
+  var filename = req.params.filename;
+  var url = config.downloads.ladokFetch.storage.url;
+  res.redirect(url + filename);
+};
+
+  
+/**
  * Update attachment-pdf
  */
 exports.addLadokAttachment = function (req, res) {
   var application = req.application;
   var message = null;
-
-  var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, './public/uploads/ladok/');
-    },
-    filename: function (req, file, cb) {
-      cb(null, application._id + '.pdf');
-    }
-  });
-
-  config.uploads.ladokUpload.storage = storage;
-
   var upload = multer(config.uploads.ladokUpload).single('newLadokFile');
   var ladokFileFilter = require(path.resolve('./config/lib/multer')).ladokFileFilter;
   
@@ -156,6 +154,7 @@ exports.addLadokAttachment = function (req, res) {
         });
       } else {
         application.complete = true;
+        application.ladokfile = req.file.path.split("/").reverse()[0];
 
         application.save(function (saveError) {
           if (saveError) {
