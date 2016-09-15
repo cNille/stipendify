@@ -1,18 +1,5 @@
 'use strict';
 
-var FTPStorage = require('multer-ftp');
-var ftp_get = {
-  host: 'shapeapp.asuscomm.com',
-  secure: false, // enables FTPS/FTP with TLS 
-  user: 'stipendify_read',
-  password: 'stipendify'
-};
-var ftp_post = {
-  host: 'shapeapp.asuscomm.com',
-  secure: false, // enables FTPS/FTP with TLS 
-  user: process.env.FTP_USERNAME,
-  password: process.env.FTP_PASSWORD
-};
 
 module.exports = {
   app: {
@@ -45,35 +32,21 @@ module.exports = {
   favicon: 'modules/core/client/img/brand/favicon.ico',
   downloads: {
     profileFetch: {
-      storage: {
-        url: 'ftp://' + ftp_get.user + ':' + ftp_get.password + '@' + ftp_get.host + '/sda1/stipendify/profile_images/',
-        basepath: '/sda1/stipendify/profile_images/',
-        ftp: ftp_get
-      }
+      dest: './modules/users/client/img/profile/uploads/'
     },
     ladokFetch: {
-      storage: {
-        url: 'ftp://' + ftp_get.user + ':' + ftp_get.password + '@' + ftp_get.host + '/sda1/stipendify/attachments/',
-        basepath: '/sda1/stipendify/attachments/',
-        ftp: ftp_get
-      }
+      dest: './modules/users/client/img/profile/uploads/'
     }
   },
   uploads: {
     profileUpload: {
-      storage: new FTPStorage({
-        basepath: '/sda1/stipendify/profile_images/',
-        ftp: ftp_post
-      }),
+      dest: './modules/users/client/img/profile/uploads/', 
       limits: {
         fileSize: 1*1024*1024 // Max file size in bytes (1 MB)
       }
     },
     ladokUpload: {
-      storage: new FTPStorage({
-        basepath: '/sda1/stipendify/attachments/',
-        ftp: ftp_post
-      }),
+      dest: './modules/users/client/img/profile/uploads/', 
       limits: {
         fileSize: 10*1024*1024 // Max file size in bytes (10 MB)
       }
