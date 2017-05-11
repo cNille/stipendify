@@ -1,11 +1,14 @@
 'use strict';
 
-var defaultEnvConfig = require('./default');
-
-//uri: 'mongodb://nille:pille@ds047305.mlab.com:47305/shapeapp',
 module.exports = {
+  secure: {
+    ssl: true,
+    privateKey: './config/sslcerts/key.pem',
+    certificate: './config/sslcerts/cert.pem'
+  },
+  port: process.env.PORT || 8443,
   db: {
-    uri: 'localhost:27017/stipendify',
+    uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/stipendify',
     options: {
       user: '',
       pass: ''
@@ -16,28 +19,25 @@ module.exports = {
   log: {
     // logging with Morgan - https://github.com/expressjs/morgan
     // Can specify one of 'combined', 'common', 'dev', 'short', 'tiny'
-    format: 'dev',
+    format: process.env.LOG_FORMAT || 'combined',
     options: {
       // Stream defaults to process.stdout
       // Uncomment/comment to toggle the logging to a log on the file system
-      //stream: {
-      //  directoryPath: process.cwd(),
-      //  fileName: 'access.log',
-      //  rotatingLogs: { // for more info on rotating logs - https://github.com/holidayextras/file-stream-rotator#usage
-      //    active: false, // activate to use rotating logs 
-      //    fileName: 'access-%DATE%.log', // if rotating logs are active, this fileName setting will be used
-      //    frequency: 'daily',
-      //    verbose: false
-      //  }
-      //}
+      stream: {
+        directoryPath: process.env.LOG_DIR_PATH || process.cwd(),
+        fileName: process.env.LOG_FILE || 'access.log',
+        rotatingLogs: { // for more info on rotating logs - https://github.com/holidayextras/file-stream-rotator#usage
+          active: process.env.LOG_ROTATING_ACTIVE === 'true' ? true : false, // activate to use rotating logs 
+          fileName: process.env.LOG_ROTATING_FILE || 'access-%DATE%.log', // if rotating logs are active, this fileName setting will be used
+          frequency: process.env.LOG_ROTATING_FREQUENCY || 'daily',
+          verbose: process.env.LOG_ROTATING_VERBOSE === 'true' ? true : false
+        }
+      }
     }
   },
-  app: {
-    title: defaultEnvConfig.app.title + ' - Development Environment'
-  },
   facebook: {
-    clientID: process.env.FACEBOOK_ID || '540827686104017',
-    clientSecret: process.env.FACEBOOK_SECRET || '85144114c4ec78126ce56ba7ae3ee3b6',
+    clientID: process.env.FACEBOOK_ID || 'APP_ID',
+    clientSecret: process.env.FACEBOOK_SECRET || 'APP_SECRET',
     callbackURL: '/api/auth/facebook/callback'
   },
   twitter: {
@@ -64,7 +64,7 @@ module.exports = {
     clientID: process.env.PAYPAL_ID || 'CLIENT_ID',
     clientSecret: process.env.PAYPAL_SECRET || 'CLIENT_SECRET',
     callbackURL: '/api/auth/paypal/callback',
-    sandbox: true
+    sandbox: false
   },
   mailer: {
     from: process.env.MAILER_FROM || 'MAILER_FROM',
@@ -76,7 +76,6 @@ module.exports = {
       }
     }
   },
-  livereload: true,
   seedDB: {
     seed: process.env.MONGO_SEED === 'true' ? true : false,
     options: {

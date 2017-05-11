@@ -785,6 +785,8 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
     vm.scholorshipId = $stateParams.scholorshipId;
     vm.authentication = Authentication;
     vm.application = application;
+    vm.ladok_url = "/uploads/ladok/" + vm.application._id + ".pdf";
+    //vm.ladok_url = $scope.trustAsResourceUrl(vm.ladok_url);
 
     $scope.isEditing = vm.scholorshipId === undefined && vm.application._id;
     vm.scholorshipName = $scope.isEditing ? vm.application.data.scholorshipName : $stateParams.scholorshipName;
@@ -792,6 +794,9 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
 
     vm.semesterStudied = vm.application.semesterStudied; 
     vm.semesterNation = vm.application.semesterNation;
+    if(vm.application.data) {
+      vm.allowance = vm.application.data.allowance;
+    }
     vm.error = null;
     vm.form = {};
     vm.remove = remove;
@@ -826,6 +831,11 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
       });
     };
 
+    $scope.updateAllowance = function () {
+      $scope.updateApplication();
+      $scope.editAllowance = false;
+    };
+
     // Save application to db
     $scope.updateApplication = function() {
       // Add userdata to application
@@ -848,7 +858,7 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
         'displayName': $scope.user.displayName,
         'personNumber': $scope.user.personNumber,
         'telephone': $scope.user.telephone,
-        'street': $scope.user.streestreet,
+        'streetaddress': $scope.user.street,
         'zipCode': $scope.user.zipCode,
         'city': $scope.user.city,
         'highschool': $scope.user.highschool,
@@ -860,6 +870,7 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
         'assignments': $scope.user.assignments,
         'earlierScholorships': $scope.user.earlierScholorships,
         'interruption': $scope.user.interruption,
+        'allowance': vm.allowance,
       };
 
       // Save application
@@ -968,10 +979,15 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
       }
 
       $scope.successCallback = function (res) {
-        var nextState = $scope.isEditing ? 'applications.list' : 'applications.attachments';
-        $state.go(nextState, {
-          applicationId: res._id
-        });
+        if($scope.isEditing){
+          $state.go('applications.scholorlist', {
+            scholorshipId: res.scholorship
+          });
+        } else {
+          $state.go('applications.attachments', {
+            applicationId: res._id
+          });
+        }
         event.preventDefault();
         return;
       };
@@ -994,7 +1010,7 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
         variable : $scope.user.telephone 
       }, { name : 'street', 
         question : 'Gatuadress', 
-        variable : $scope.user.street 
+        variable : $scope.user.streetaddress 
       }, { name : 'zipcode', 
         question : 'Post nummer', 
         variable : $scope.user.zipCode 
@@ -1122,14 +1138,102 @@ angular.module('users').controller('AttachmentsController', ['$scope', '$timeout
     var vm = this;
 
     $scope.dateFilter = dateFilter;
+    $scope.title = 'Laddar...';
 
     vm.scholorshipId = $stateParams.scholorshipId;
-    vm.semesters = SemesterService.getLastFourSemesters({});
+    vm.semesters = SemesterService.getLastFourSemesters([]);
     $scope.applications = ApplicationsService.query({ scholorship : vm.scholorshipId }, function(data) {
       // TODO: Find better solution than to filter here.
       $scope.applications = data.filter(function(d){ return d.scholorship === vm.scholorshipId && d.complete; });
-      $scope.scholorshipName = data[0].data.scholorshipName;
+      $scope.scholorshipName = $scope.applications[0].data.scholorshipName;
+      $scope.totalFunds = $scope.applications.reduce(function(prev, curr){ return { data: { allowance : prev.data.allowance + curr.data.allowance } }; }).data.allowance;
+      if($scope.applications.length > 0){
+        $scope.title = 'Stipendiumansökningar för ' + $scope.scholorshipName;
+      } else {
+        $scope.title = 'Inga ansökningar har inkommit än...';
+      }
+      $scope.dataList = $scope.convertToExcelFormat($scope.applications);
     });
+
+    $scope.dataList = [];
+    $scope.datafields = {
+      'data.displayName' : 'Namn',
+      'semesterStudied' : 'Termin Studerat',
+      'semesterNation' : 'Termin Nation',
+      'data.personNumber' : 'Personnr',
+      'data.telephone' : 'Telefon',
+      'data.streetaddress' : 'Adress',
+      'data.zipCode' : 'Postnr',
+      'data.city' : 'Stad',
+      'data.highschool' : 'Gymnasium',
+      'data.bank' : 'Bank',
+      'data.bankaccount' : 'Bankkonto',
+      'data.union' : 'Kår',
+      'data.universitypoints.total' : 'HP totalt',
+      'data.interruption' : 'Avbrott',
+    };
+
+    $scope.convertToExcelFormat = function(applications){
+      var dataList = [];
+      var unipoints = new Set();
+      var assignments = new Set();
+      var earlierScholorships = new Set();
+
+      function search(key, nameKey, myArray){
+        for (var i=0; i < myArray.length; i++) {
+          if (myArray[i][key] === nameKey) {
+            return myArray[i];
+          }
+        }
+        return {};
+      }
+      // Loop through applications to get all unique semesters.
+      applications.forEach(function (a){
+        a.data.universitypoints.semesters.forEach(function (s){
+          unipoints.add(s.name);
+        });
+        a.data.assignments.forEach(function (s){
+          var str = s.semester.split('-');
+          str.forEach(function (x){
+            assignments.add(x);
+          });
+        });
+        a.data.earlierScholorships.forEach(function (s){
+          earlierScholorships.add(s.semester);
+        });
+      });
+      applications.forEach(function (a){
+        unipoints.forEach(function(u){
+          $scope.datafields['data.universitypoints.' + u] = 'Poäng ' + u;
+          a.data.universitypoints[u] = search('name', u, a.data.universitypoints.semesters).points;
+        });
+
+        assignments.forEach(function(u){
+          u.split("-").forEach(function (x){
+            $scope.datafields['data.assignments.' + u] = 'Uppdrag ' + u;
+            a.data.assignments[u] = search('semester', x, a.data.assignments).name;
+          });
+        });
+        earlierScholorships.forEach(function(u){
+          $scope.datafields['data.earlierScholorships.' + u] = 'Tidigare stip.' + u;
+          var earl = search('semester', u, a.data.earlierScholorships);
+          a.data.earlierScholorships[u] = earl.name + ": " + earl.money + "kr";
+        });
+
+        var inter;
+        if(a.data.interruption.length > 1){
+          inter = a.data.interruption.reduce(function(pre, curr) {
+            return pre + ', ' + curr.when + ': ' + curr.why ;
+          });
+        } else if(a.data.interruption.length === 1) {
+          inter = a.data.interruption[0].when + ": " + a.data.interruption[0].why;
+        }
+        a.data.interruption = inter;   
+        dataList.push(a);
+      });
+      return dataList;
+    };
+
 
     $scope.propertyName = 'age';
     $scope.reverse = true;
@@ -1223,7 +1327,6 @@ angular.module('users').controller('AttachmentsController', ['$scope', '$timeout
     vm.remove = remove;
     vm.save = save;
     
-    // Det Nille lagt dit, härifrån...
     vm.isAdmin = vm.authentication.user.roles && vm.authentication.user.roles.indexOf('admin') >= 0;
   
     // To enable using ng-model date to model.  
@@ -1244,12 +1347,23 @@ angular.module('users').controller('AttachmentsController', ['$scope', '$timeout
       vm.scholorship.endDate = new Date(dateString);
     });
   
-
     // To show description in HTML.
     $scope.htmlDescription = $sce.trustAsHtml(vm.scholorship.description);
 
+
+    $scope.addFund = function() {
+      if(!vm.scholorship.funds) {
+        vm.scholorship.funds = [];
+      }
+      vm.scholorship.funds.push({ name: '', size: 0, description: '', edit: true });
+    };
+
+    $scope.saveFund = function (pos, valid) {
+      if(valid){
+        vm.scholorship.funds[pos].edit = false;
+      }
+    };
   
-    // ... till hit
 
     // Remove existing Scholorship
     function remove() {
@@ -1262,7 +1376,7 @@ angular.module('users').controller('AttachmentsController', ['$scope', '$timeout
     function save(isValid) {
       if (!(isValid && dateFilter(vm.scholorship.startDate, 'yyyy-MM-dd') < dateFilter(vm.scholorship.endDate, 'yyyy-MM-dd'))) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.scholorshipForm');
-        vm.error = "Ej giltig input. P.S tänk på att startdatum inte får ske samma dag eller senare än slutdatumet.";
+        vm.error = 'Ej giltig input. P.S tänk på att startdatum inte får ske samma dag eller senare än slutdatumet.';
         return false;
       }
 
@@ -1284,6 +1398,89 @@ angular.module('users').controller('AttachmentsController', ['$scope', '$timeout
       }
     }
   }
+})();
+
+/*globals saveAs */
+(function () {
+  'use strict';
+
+  angular.module('scholorships')
+    .directive('ngJsonExcel', function () {
+      return {
+        restrict: 'AE',
+        scope: true,
+        controller: ["$scope", "$element", function ($scope, $element) {
+          $scope.filename = 'ansokningar';
+          var fields = [];
+          var header = [];
+          var separator = $scope.separator || ';';
+
+          $scope.myOnclickFunction = function (myfields, applications) {
+            angular.forEach(myfields, function(field, key) {
+              if(!field || !key) {
+                throw new Error('error json report fields');
+              }
+              fields.push(key);
+              header.push(field);
+            });
+            var bodyData = _bodyData(applications);
+            var strData = _convertToExcel(bodyData);
+            var blob = new Blob([strData], { type: 'text/plain;charset=utf-8' });
+            return saveAs(blob, [$scope.filename + '.csv']);
+          };
+
+          function _bodyData(applications) {
+            var data = applications;
+            var body = "";
+            angular.forEach(data, function(dataItem) {
+              var rowItems = [];
+              angular.forEach(fields, function(field) {
+                if(field.indexOf('.')) {
+                  field = field.split(".");
+                  var curItem = dataItem;
+                  // deep access to obect property
+                  angular.forEach(field, function(prop){
+                    if (curItem !== null && curItem !== undefined) {
+                      curItem = curItem[prop];
+                    }
+                  });
+                  data = curItem;
+                } else {
+                  data = dataItem[field];
+                }
+
+                var fieldValue = data !== null ? data : ' ';
+
+                if (fieldValue !== undefined && angular.isObject(fieldValue)) {
+                  fieldValue = _objectToString(fieldValue);
+                }
+
+                if(typeof fieldValue === 'string') {
+                  rowItems.push('"' + fieldValue.replace(/"/g, '""') + '"');
+                } else {
+                  rowItems.push(fieldValue);
+                }
+              });
+              body += rowItems.join(separator) + '\n';
+            });
+            return body;
+          }
+
+          function _convertToExcel(body) {
+            return header.join(separator) + '\n' + body;
+          }
+
+          function _objectToString(object) {
+            var output = '';
+            angular.forEach(object, function(value, key) {
+              output += key + ':' + value + ' ';
+            });
+            return '"' + output + '"';
+          }
+        }]
+      };
+    }
+  );
 })();
 
 // Applications service used to communicate Applications REST endpoints.
@@ -1761,7 +1958,7 @@ angular.module('users').controller('ChangePasswordController', ['$scope', '$http
 angular.module('users').controller('ChangeProfilePictureController', ['$scope', '$timeout', '$window', 'Authentication', 'FileUploader',
   function ($scope, $timeout, $window, Authentication, FileUploader) {
     $scope.user = Authentication.user;
-    $scope.imageURL = $scope.user.profileImageURL;
+    $scope.imageURL = '/api/users/picture/' + $scope.user.profileImageURL;
 
     // Create file uploader instance
     $scope.uploader = new FileUploader({
@@ -1825,7 +2022,7 @@ angular.module('users').controller('ChangeProfilePictureController', ['$scope', 
     // Cancel the upload process
     $scope.cancelUpload = function () {
       $scope.uploader.clearQueue();
-      $scope.imageURL = $scope.user.profileImageURL;
+      $scope.imageURL = '/api/users/picture/' + $scope.user.profileImageURL;
     };
   }
 ]);
