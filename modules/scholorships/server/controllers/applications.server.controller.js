@@ -127,10 +127,23 @@ exports.applicationByID = function(req, res, next, id) {
 /**
  * Get ladok attachment
  */
+
+// AWS
+var multerS3 = require('multer-s3');
+var AWS = require('aws-sdk');
+AWS.config.region = 'eu-west-1';
+var s3 = new AWS.S3({ params: { Bucket: config.s3bucket } });
+
 exports.getLadokAttachment = function (req, res) {
   var filename = req.params.filename;
-  var url = config.downloads.ladokFetch.storage.url;
-  res.redirect(url + filename);
+  var url;
+  if(process.env.NODE_ENV !== 'production'){
+    url = 'http://' + req.headers.host + '/modules/images/client/img/' + filename;
+    //url = 'https://wasbak.herokuapp.com/api/images/upload/' + img;
+  } else {
+    url = s3.getSignedUrl('getObject', { Bucket: config.s3bucket, Key: filename });
+  }
+  res.redirect(url);
 };
 
   
